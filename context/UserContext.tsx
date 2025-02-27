@@ -21,7 +21,8 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
     const savedUser = Cookies.get("user");
-    return savedUser ? JSON.parse(savedUser) : null;
+    if (savedUser === undefined || savedUser === 'undefined' || savedUser === null) return null;
+    return JSON.parse(savedUser);
   });
 
   const [token, setTokenState] = useState<string | null>(
@@ -34,7 +35,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const updateUser = (newUser: User) => {
+    console.log("Updating user in context:", newUser);
     Cookies.set("user", JSON.stringify(newUser), { expires: 7 });
+    console.log("User cookie set:", Cookies.get("user"));
     setUser(newUser);
   };
 

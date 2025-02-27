@@ -1,5 +1,5 @@
+'use client';
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { Task } from "../../types/task";
 import { taskApi } from "../../services/client-services/tasks/api";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import { BsCalendar3, BsClock, BsPerson, BsFlag, BsCheckCircle, BsPaperclip, BsD
 import { useUser } from "../../context/UserContext";
 import { client } from "@/utils/filestack";
 import { getLocalTimeString } from "@/helper/date";
+import { useParams } from "next/navigation";
 
 interface ProjectUser {
     id: number;
@@ -22,7 +23,8 @@ interface FileUpload {
 }
 
 export default function TaskDetails() {
-    const { taskId } = useParams();
+    const params = useParams();
+    const taskId = params.taskId;
     const [task, setTask] = useState<Task | null>(null);
     const [newMessage, setNewMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -44,11 +46,12 @@ export default function TaskDetails() {
         if (!taskId) return;
         try {
             setLoading(true);
+            // console.log("Params are: ", params);
             const taskData = await taskApi.getTaskById(parseInt(taskId));
-            setTask(taskData);
+            setTask(taskData.task);
             console.log("taskData", taskData)
-            if (taskData.project_id) {
-                fetchProjectUsers(taskData.project_id);
+            if (taskData.task.project_id) {
+                fetchProjectUsers(taskData.task.project_id);
             }
         } catch (error) {
             console.error("Error fetching task:", error);

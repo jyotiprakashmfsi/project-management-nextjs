@@ -60,12 +60,6 @@ const Sidebar: React.FC = () => {
       label: "Dashboard",
       icon: <RiDashboardLine size={20} />,
     },
-    // {
-    //   path: "/workspace/projects",
-    //   label: "Projects",
-    //   icon: <RiFolder2Line size={20} />,
-    // },
-    { path: "/workspace/tasks", label: "Tasks", icon: <RiTaskLine size={20} /> },
     { path: "/workspace/teams", label: "Teams", icon: <RiTeamLine size={20} /> },
     {
       path: "/workspace/settings",

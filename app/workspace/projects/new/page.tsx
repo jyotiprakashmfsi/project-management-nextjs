@@ -41,7 +41,7 @@ function NewProject() {
                 ...formData,
                 created_by: user.id
             });
-            router.push('/dashboard');
+            router.push('/workspace');
         } catch (err: any) {
             setError(err.message || 'Failed to create project');
         } finally {

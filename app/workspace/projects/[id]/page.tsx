@@ -1,6 +1,8 @@
 import ProjectComponent from "@/components/project/project-component";
 import Sidebar from "@/components/sidebar";
 
+
+
 export default function ProjectPage() {
   return (
     <div className="flex min-h-screen w-full bg-gray-50">

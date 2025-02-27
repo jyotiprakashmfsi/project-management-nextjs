@@ -37,7 +37,7 @@ function Login() {
         console.log("user", response.user);
         console.log("Login successful");
         toast.success('Login successful!');
-        router.push('/dashboard');
+        router.push('/workspace');
       } else {
         toast.error('Invalid email or password');
       }

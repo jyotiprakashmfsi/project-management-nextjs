@@ -1,24 +1,27 @@
-import { Navigate, Outlet } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 /**
  * Protected route to check if user is logged in
  * User must be logged in to access this route
  */
+interface ProtectedRouteProps {
+    children: React.ReactNode;
+    redirectTo?: string;
+  }
 
-const ProtectedRoute = () => {
-    const token = Cookies.get('token');
-    console.log("token", token)
+const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRouteProps) => {
+    const router = useRouter();
 
-    if (!token) {
-        return <Navigate to="/login" replace />;
-    }
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (!token) {
+            router.push(redirectTo);
+        }
+    }, [router]);
 
-    return (
-        <div>
-            <Outlet />
-        </div>
-    );
+    return <>{children}</>;
 };
 
 export default ProtectedRoute;
