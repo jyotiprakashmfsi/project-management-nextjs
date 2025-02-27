@@ -12,7 +12,7 @@ export const taskApi = {
         return response.json();
     },
 
-    getTaskById: async (id: number): Promise<Task> => {
+    getTaskById: async (id: number): Promise<any> => {
         const response = await fetch(`/api/tasks/${id}`, {
             method: 'GET',
             headers: getHeaders()

@@ -5,6 +5,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { authService } from '@/services/client-services/auth/api';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface ValidationErrors {
     fname?: string;
@@ -96,11 +97,30 @@ function Signup() {
                 password: formData.password
             });
 
+            console.log("loginResponse", loginResponse) 
+
+            if (!loginResponse.user || !loginResponse.token) {
+                console.error("Login response missing user or token:", loginResponse);
+                toast.error('Login response missing user or token');
+                setLoading(false);
+                return;
+            }
+            
+            console.log("loginResponse", loginResponse);
+            console.log("Setting token:", loginResponse.token);
+            console.log("Setting user:", loginResponse.user);
+            
             setToken(loginResponse.token);
             setUser(loginResponse.user);
+            
+            Cookies.set("user", JSON.stringify(loginResponse.user), { expires: 7 });
+            
+            console.log("After setting user and token");
+            console.log("User cookie after direct set:", Cookies.get("user"));
+
             toast.success('Account created successfully!');
 
-            router.push('/new-project');
+            router.push('/workspace/projects/new');
         } catch (err: any) {
             toast.error(err.message || 'Failed to create account');
         } finally {

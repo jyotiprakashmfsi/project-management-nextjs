@@ -21,7 +21,7 @@ export class AuthService {
     }
 
     async authenticateUser(email: string, password: string): Promise<{ token: string, user: SafeUser }> {
-        const user = await this.authRepository.findUserByEmail(email);
+        const [user] = await this.authRepository.findUserByEmail(email);
 
         if (!user) {
             throw new Error("User not found");
