@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: project-manager
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: ${NODE_ENV:-development}
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DATABASE_URL=mysql://root:Jyoti@2002@mysql-db:3306/projectManagement
+      - DB_HOST=mysql-db
+      - DB_USER=root
+      - DB_PASSWORD=Jyoti@2002
+      - DB_NAME=projectManagement
+      - DB_PORT=3306
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    restart: unless-stopped
+    
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Jyoti@2002
+      MYSQL_DATABASE: projectManagement
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Jyoti@2002
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pJyoti@2002"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql-data:

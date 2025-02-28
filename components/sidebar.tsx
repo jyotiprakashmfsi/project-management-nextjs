@@ -109,7 +109,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 h-full bg-gray-800 text-white">
+    <aside className="w-64 z-50 h-full text-white">
       {isMobile && (
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
