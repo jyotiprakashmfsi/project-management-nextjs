@@ -4,9 +4,7 @@ import TaskDetails from "@/components/tasks/task-details";
 export default function TasksPage() {
   return (
     <div className="flex min-h-screen w-full bg-gray-50">
-      <div>
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="flex-1 w-full">
         <div className="p-8">
           <div className="flex justify-between">

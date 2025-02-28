@@ -3,9 +3,7 @@ import Sidebar from "@/components/sidebar";
 export default function ProjectPage() {
   return (
     <div className="flex min-h-screen w-full bg-gray-50">
-      <div className="">
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="flex-1 w-full">
         <div className="p-8">
           <div className="flex justify-between">

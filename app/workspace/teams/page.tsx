@@ -4,9 +4,7 @@ import TeamsComponent from "@/components/teams/teams-component";
 export default function TeamsPage() {
   return (
     <div className="flex min-h-screen w-full bg-gray-50">
-      <div >
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="flex-1 w-full">
         <div className="p-8">
           <div className="flex justify-between">

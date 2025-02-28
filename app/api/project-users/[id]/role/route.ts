@@ -4,9 +4,10 @@ import { ProjectUserService } from "../../../../../services/api-services/project
 const projectUserService = new ProjectUserService();
 
 
-export const PUT = async (req: NextRequest, { params: { id } }: { params: { id: string } }): Promise<any> => {
+export const PUT = async (req: NextRequest, { params}: { params: { id: string } }): Promise<any> => {
     try {
         const body = await req.json()
+        const { id } = params;
         const updatedProjectUser = await projectUserService.updateProjectUserRole(parseInt(id), body.role);
         if (!updatedProjectUser) {
             return NextResponse.json({ message: "Project user not found" }, { status: 404 });

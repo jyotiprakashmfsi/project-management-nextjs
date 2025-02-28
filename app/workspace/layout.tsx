@@ -1,6 +1,7 @@
 "use client";
 
 import ProtectedRoute from "@/components/protected/protected-route";
+import Sidebar  from '@/components/sidebar';
 
 export default function WorkspaceLayout({
   children,

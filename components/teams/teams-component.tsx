@@ -139,14 +139,13 @@ export default function TeamsComponent() {
                 user_id: formData.user_id,
                 role: formData.role
             });
-            if (response && response.status === 200) {
+            console.log(response)
                 toast.success('Team member added successfully');
                 setShowAddMemberModal(false);
                 fetchTeamMembers();
-            } else {
                 console.error('Unexpected response format:', response);
                 toast.error('Failed to add team member');
-            }
+            
             setFormData({ user_id: 0, role: 'member', projectId: 0 });
         } catch (error: any) {
             console.error('Error adding team member:', error);
