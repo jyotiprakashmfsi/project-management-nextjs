@@ -3,19 +3,169 @@
 @tailwind utilities;
 
 :root {
+  /* Light theme (default) */
   --background: #ffffff;
   --foreground: #171717;
+  --white: #ffffff;
+  --black: #171717;
+  
+  /* Primary colors */
+  --primary-50: #f0f9ff;
+  --primary-100: #e0f2fe;
+  --primary-200: #bae6fd;
+  --primary-300: #7dd3fc;
+  --primary-400: #38bdf8;
+  --primary-500: #0ea5e9;
+  --primary-600: #0284c7;
+  --primary-700: #0369a1;
+  --primary-800: #075985;
+  --primary-900: #0c4a6e;
+  --primary-950: #082f49;
+  
+  /* Neutral colors */
+  --neutral-50: #f9fafb;
+  --neutral-100: #f3f4f6;
+  --neutral-200: #e5e7eb;
+  --neutral-300: #d1d5db;
+  --neutral-400: #9ca3af;
+  --neutral-500: #6b7280;
+  --neutral-600: #4b5563;
+  --neutral-700: #374151;
+  --neutral-800: #1f2937;
+  --neutral-900: #111827;
+  --neutral-950: #030712;
+  
+  /* Success colors */
+  --success-50: #f0fdf4;
+  --success-500: #22c55e;
+  --success-900: #14532d;
+  
+  /* Warning colors */
+  --warning-50: #fffbeb;
+  --warning-500: #f59e0b;
+  --warning-900: #78350f;
+  
+  /* Error colors */
+  --error-50: #fef2f2;
+  --error-500: #ef4444;
+  --error-900: #7f1d1d;
+  
+  /* UI element specific */
+  --card-background: #ffffff;
+  --card-foreground: #171717;
+  --card-border: #e5e7eb;
+  
+  --button-primary-background: var(--primary-600);
+  --button-primary-foreground: white;
+  --button-primary-hover: var(--primary-700);
+  
+  --input-background: white;
+  --input-border: var(--neutral-300);
+  --input-focus-border: var(--primary-500);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark theme */
+.dark-theme {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --white: #0a0a0a;
+  --black: #ededed;
+
+  --primary-950: #f0f9ff;
+  --primary-900: #e0f2fe;
+  --primary-800: #bae6fd;
+  --primary-700: #7dd3fc;
+  --primary-600: #38bdf8;
+  --primary-500: #0ea5e9;
+  --primary-400: #0284c7;
+  --primary-300: #268fc8;
+  --primary-200: #1f6ba8;
+  --primary-100: #1a5687;
+  --primary-50: #0f3f62;
+
+  --neutral-950: #f9fafb;
+  --neutral-900: #f3f4f6;
+  --neutral-800: #e5e7eb;
+  --neutral-700: #d1d5db;
+  --neutral-600: #9ca3af;
+  --neutral-500: #6b7280;
+  --neutral-400: #4b5563;
+  --neutral-300: #374151;
+  --neutral-200: #1f2937;
+  --neutral-100: #111827;
+  --neutral-50: #030712;
+
+  /* UI element specific */
+  --card-background: #1a1a1a;
+  --card-foreground: #ededed;
+  --card-border: #2a2a2a;
+    
+  --button-primary-background: var(--primary-500);
+  --button-primary-foreground: white;
+  --button-primary-hover: var(--primary-600);
+  
+  --input-background: #1a1a1a;
+  --input-border: var(--neutral-700);
+  --input-focus-border: var(--primary-500);
+  
+  /* Shadows - darker for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
 }
 
+/* Light theme class (for explicit light mode) */
+.light-theme {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* UI element specific */
+  --card-background: #ffffff;
+  --card-foreground: #171717;
+  --card-border: #e5e7eb;
+}
+
+/* Apply theme variables to the body */
 body {
   color: var(--foreground);
   background: var(--background);
   /* font-family: Arial, Helvetica, sans-serif; */
+}
+
+/* Utility classes */
+@layer components {
+  .card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+    border-color: var(--card-border);
+    background-color: var(--card-background);
+    color: var(--card-foreground);
+  }
+  
+  .btn-primary {
+    @apply rounded-md px-4 py-2 font-medium transition-colors;
+    background-color: var(--button-primary-background);
+    color: var(--button-primary-foreground);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--button-primary-hover);
+  }
+  
+  .input {
+    @apply rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-opacity-50;
+    background-color: var(--input-background);
+    border-color: var(--input-border);
+  }
+  
+  .input:focus {
+    border-color: var(--input-focus-border);
+    @apply ring-primary-500;
+  }
 }

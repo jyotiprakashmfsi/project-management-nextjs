@@ -24,7 +24,8 @@ interface FileUpload {
 
 export default function TaskDetails() {
     const params = useParams();
-    const taskId = params.taskId;
+    const tId= params.taskId;
+    const taskId= Array.isArray(tId) ? tId[0] : tId;
     const [task, setTask] = useState<Task | null>(null);
     const [newMessage, setNewMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -217,7 +218,7 @@ export default function TaskDetails() {
             <div className="flex-1 overflow-hidden flex flex-col">
                 <div className="flex-1 overflow-y-auto p-6">
                     <div className="space-y-2 font-mono text-sm">
-                        {task.task_json?.messages.map((message, index) => (
+                        {task.task_json?.messages.map((message: any, index: any) => (
                             <div key={index} className="flex mb-3">
                                 <div className="flex items-start gap-2 text-gray-600">
                                     <span className="text-gray-400 min-w-[150px]">{getLocalTimeString(new Date(message.posted_at))}</span>

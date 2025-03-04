@@ -1,4 +1,4 @@
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/components/ui/sidebar";
 import TeamsComponent from "@/components/teams/teams-component";
 
 export default function TeamsPage() {

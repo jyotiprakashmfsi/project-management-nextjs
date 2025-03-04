@@ -16,11 +16,13 @@ import {
   RiUserLine,
   RiTaskLine,
 } from "react-icons/ri";
-import { useUser } from "../context/UserContext";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { projectUserApi } from "@/services/client-services/project-users/api";
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/context/UserContext';
+import { useTheme } from '@/context/ThemeContext';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 
 interface Project {
   project_id: number;
@@ -30,6 +32,7 @@ interface Project {
 const Sidebar: React.FC = () => {
   const router = useRouter();
   const { user, logout } = useUser();
+  const { theme } = useTheme();
   const [showDropdown, setShowDropdown] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -109,7 +112,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 z-50 h-full text-white">
+    <aside className={`w-64 z-50 h-full text-white ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
       {isMobile && (
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -131,6 +134,7 @@ const Sidebar: React.FC = () => {
         <div className="flex flex-col h-full">
           <div className="p-4 border-b">
             <h2 className="text-xl font-bold text-gray-800">Project Manager</h2>
+            <ThemeToggle />
           </div>
 
           <div className="flex-1 overflow-y-auto">

@@ -33,6 +33,11 @@ export class TaskService {
         return this.taskRepository.updateTask(id, taskData);
     }
 
+    async getUserTasks(userId: number, page: number = 1, limit: number = 10): Promise<{ tasks: Task[], total: number }> {
+        const pagination: PaginationParams = { page, limit };
+        return this.taskRepository.getUserTasks(userId, pagination);
+    }
+
     async deleteTask(id: number): Promise<boolean> {
         return this.taskRepository.deleteTask(id);
     }

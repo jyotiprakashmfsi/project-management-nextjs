@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import heroImage from "../assets/heroImage.png";
 import { useUser } from "@/context/UserContext";
 import { useState, useEffect } from "react";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 
 export default function HomeComponent() {
   const router = useRouter();
@@ -21,6 +22,8 @@ export default function HomeComponent() {
     <div className="min-h-screen bg-gradient-to-b from-white to-indigo-50">
       <nav className="fixed w-full bg-white/80 backdrop-blur-sm shadow-sm z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        <ThemeToggle />
+
           <div className="text-2xl font-bold text-indigo-600">
             Project Management
           </div>

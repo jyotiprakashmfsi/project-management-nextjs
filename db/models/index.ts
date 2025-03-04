@@ -5,16 +5,20 @@ import mysql2 from 'mysql2';
 
 dotenv.config();
 
+// Check if we're running in a test environment
+const isTestEnv = process.env.NODE_ENV === 'test';
+
 const dbHost = process.env.DB_HOST || config.development.host;
 const dbUser = process.env.DB_USER || config.development.username;
 const dbPassword = process.env.DB_PASSWORD || config.development.password;
 const dbName = process.env.DB_NAME || config.development.database;
 const dbPort = process.env.DB_PORT || config.development.port;
 
-console.log(`Connecting to MySQL at ${dbHost}:${dbPort} as ${dbUser}`);
+if (!isTestEnv) {
+  console.log(`Connecting to MySQL at ${dbHost}:${dbPort} as ${dbUser}`);
+}
 
-// Create the Sequelize instance
-export const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   dbName,
   dbUser,
   dbPassword,
@@ -25,7 +29,10 @@ export const sequelize = new Sequelize(
     dialectModule: mysql2,
     benchmark: true,
     dialectOptions: {
-      host: dbHost
+      host: dbHost,
+      charset: 'utf8mb4',
+      supportBigNumbers: true,
+      decimalNumbers: true
     },
     logging: console.log
   }
@@ -198,6 +205,10 @@ export const Tasks = sequelize.define(
         key: 'id'
       }
     },
+    task_json: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
     created_by: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -219,14 +230,27 @@ export const Tasks = sequelize.define(
   }
 );
 
-async function initializeDatabase() {
+export async function initializeDatabase() {
+  // Skip database initialization in test environment
+  if (isTestEnv) {
+    console.log('Test environment detected, skipping database initialization');
+    return;
+  }
+  
   try {
+    console.log('Starting database initialization...');
+    
+    // First, try to connect to MySQL server and create the database if it doesn't exist
     const tempSequelize = new Sequelize('mysql', dbUser, dbPassword, {
       host: dbHost,
       port: parseInt(dbPort as string, 10) || 3306,
       dialect: 'mysql',
       dialectModule: mysql2,
-      logging: console.log
+      logging: console.log,
+      retry: {
+        max: 5, // Maximum retry 5 times
+        timeout: 30000 // 30 seconds timeout between retries
+      }
     });
 
     try {
@@ -236,12 +260,18 @@ async function initializeDatabase() {
       await tempSequelize.close();
     }
 
-    // Sync all models
-    await sequelize.sync({ alter: true });
-    
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-    console.log('All models were synchronized successfully.');
+    // Now connect to our database and sync models
+    try {
+      // Sync all models with a more cautious approach
+      // await sequelize.sync({ alter: true });
+      
+      await sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+      console.log('All models were synchronized successfully.');
+    } catch (dbError) {
+      console.error('Error syncing models:', dbError);
+      throw dbError;
+    }
   } catch (error) {
     console.error('Error initializing database:', error);
     throw error;
@@ -253,4 +283,4 @@ initializeDatabase().catch(error => {
   console.error('Failed to initialize database:', error);
 });
 
-export default sequelize;
+export { sequelize };

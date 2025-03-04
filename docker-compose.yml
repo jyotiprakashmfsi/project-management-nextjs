@@ -17,6 +17,8 @@ services:
       - DB_PASSWORD=Jyoti@2002
       - DB_NAME=projectManagement
       - DB_PORT=3306
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+      - DOCKER_CONTAINER=true
     volumes:
       - .:/app
       - /app/node_modules
@@ -24,6 +26,12 @@ services:
       mysql-db:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     
   mysql-db:
     image: mysql:8.0
@@ -32,18 +40,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Jyoti@2002
       MYSQL_DATABASE: projectManagement
-      MYSQL_USER: root
-      MYSQL_PASSWORD: Jyoti@2002
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=caching_sha2_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pJyoti@2002"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
 
 volumes:
   mysql-data:

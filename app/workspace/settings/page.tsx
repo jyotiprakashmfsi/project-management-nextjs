@@ -1,5 +1,5 @@
 import SettingsComponent from "@/components/settings/settings-component";
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/components/ui/sidebar";
 
 
 export default function SettingsPage() {

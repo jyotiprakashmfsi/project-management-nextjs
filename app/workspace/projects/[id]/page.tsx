@@ -1,5 +1,5 @@
 import ProjectComponent from "@/components/project/project-component";
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/components/ui/sidebar";
 
 
 

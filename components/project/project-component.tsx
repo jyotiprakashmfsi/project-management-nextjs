@@ -24,7 +24,8 @@ interface ProjectStats {
 
 export default function ProjectComponent() {
     const params = useParams();
-    const projectId = params.id;
+    const projId = params.id;
+    const projectId = Array.isArray(projId) ? projId[0] : projId;
     const [project, setProject] = useState<ProjectDetails | null>(null);
     const [stats, setStats] = useState<ProjectStats>({
         totalTasks: 0,
@@ -42,14 +43,16 @@ export default function ProjectComponent() {
     const fetchProjectDetails = async () => {
         try {
             setLoading(true);
-            const projectData = await projectApi.getProjectById(parseInt(projectId!));
+            if (!projectId) return;
+            
+            const projectData = await projectApi.getProjectById(parseInt(projectId));
             setProject(projectData);
             console.log("projectData", projectData)
 
-            const tasks = await taskApi.getProjectTasks(parseInt(projectId!));
+            const tasks = await taskApi.getProjectTasks(parseInt(projectId));
             const completedTasks = tasks.filter(task => task.status === 'finished').length;
             
-            const teamMembers = await projectUserApi.getProjectUsers(parseInt(projectId!));
+            const teamMembers = await projectUserApi.getProjectUsers(parseInt(projectId));
             console.log("teamMembers", teamMembers)
             
 
@@ -126,7 +129,8 @@ export default function ProjectComponent() {
             </div>
 
             <div className="mt-8">
-                <ProjectTasks projectId={parseInt(projectId ?? '0')} />
+                <h2 className="text-xl font-semibold mb-4">Project Tasks</h2>
+                <ProjectTasks projectId={projectId ? parseInt(projectId) : 0} />
             </div>
         </div>
     );
