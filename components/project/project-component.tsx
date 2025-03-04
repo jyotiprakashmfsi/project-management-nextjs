@@ -80,7 +80,7 @@ export default function ProjectComponent() {
     if (!project) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <div className="text-center text-gray-500">Project not found</div>
+                <div className="text-center text-neutral-500">Project not found</div>
             </div>
         );
     }
@@ -88,8 +88,8 @@ export default function ProjectComponent() {
     return (
         <div className="p-6">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">{project.name}</h1>
-                <p className="mt-2 text-gray-600">{project.description}</p>
+                <h1 className="text-3xl font-bold text-neutral-900">{project.name}</h1>
+                <p className="mt-2 text-neutral-600">{project.description}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -97,8 +97,8 @@ export default function ProjectComponent() {
                     <div className="flex items-center">
                         <RiTaskLine className="text-indigo-500 text-2xl" />
                         <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-500">Total Tasks</p>
-                            <p className="text-2xl font-semibold text-gray-900">{stats.totalTasks}</p>
+                            <p className="text-sm font-medium text-neutral-500">Total Tasks</p>
+                            <p className="text-2xl font-semibold text-neutral-900">{stats.totalTasks}</p>
                         </div>
                     </div>
                 </div>
@@ -107,8 +107,8 @@ export default function ProjectComponent() {
                     <div className="flex items-center">
                         <RiTeamLine className="text-green-500 text-2xl" />
                         <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-500">Team Members</p>
-                            <p className="text-2xl font-semibold text-gray-900">{stats.teamMembers}</p>
+                            <p className="text-sm font-medium text-neutral-500">Team Members</p>
+                            <p className="text-2xl font-semibold text-neutral-900">{stats.teamMembers}</p>
                         </div>
                     </div>
                 </div>
@@ -121,8 +121,8 @@ export default function ProjectComponent() {
                             </span>
                         </div>
                         <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-500">Project Status</p>
-                            <p className="text-2xl font-semibold text-gray-900 capitalize">{project.status}</p>
+                            <p className="text-sm font-medium text-neutral-500">Project Status</p>
+                            <p className="text-2xl font-semibold text-neutral-900 capitalize">{project.status}</p>
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center bg-neutral-50">
           <div className="p-8 bg-white shadow-lg rounded-lg max-w-md w-full">
             <div className="flex flex-col items-center">
               <div className="text-red-500 mb-4">
@@ -36,8 +36,8 @@ export default function GlobalError({
                   />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-gray-800 mb-2">Something went wrong!</h1>
-              <p className="text-gray-600 mb-6 text-center">
+              <h1 className="text-2xl font-bold text-neutral-800 mb-2">Something went wrong!</h1>
+              <p className="text-neutral-600 mb-6 text-center">
                 We apologize for the inconvenience. The error has been logged and we're working on fixing it.
               </p>
               <Button

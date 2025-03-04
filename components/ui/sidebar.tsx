@@ -40,7 +40,6 @@ const Sidebar: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if we're in a browser environment before accessing window
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth < 768);
       
@@ -112,16 +111,16 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className={`w-64 z-50 h-full text-white ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+    <aside className={`w-64 z-50 h-full text-white ${theme === 'dark' ? 'bg-neutral-800' : 'bg-white'}`}>
       {isMobile && (
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className="fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md"
         >
           {isSidebarOpen ? (
-            <RiCloseLine size={24} className="text-gray-800" />
+            <RiCloseLine size={24} className="text-neutral-800" />
           ) : (
-            <RiMenuLine size={24} className="text-gray-800" />
+            <RiMenuLine size={24} className="text-neutral-800" />
           )}
         </button>
       )}
@@ -133,8 +132,7 @@ const Sidebar: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           <div className="p-4 border-b">
-            <h2 className="text-xl font-bold text-gray-800">Project Manager</h2>
-            <ThemeToggle />
+            <h2 className="text-xl font-bold text-neutral-800">Project Manager</h2>
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -152,8 +150,8 @@ const Sidebar: React.FC = () => {
                     className={`flex items-center space-x-2 px-4 py-2.5 rounded-md transition-colors ${
                       location?.pathname === item.path
                         ? "bg-indigo-50 text-indigo-600"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }`}
+                        : "text-neutral-700 hover:bg-neutral-100"
+                      }`}
                   >
                     {item.icon}
                     <span>{item.label}</span>
@@ -165,7 +163,7 @@ const Sidebar: React.FC = () => {
                 <div className="px-4 py-2">
                   <button
                     onClick={() => setShowDropdown(!showDropdown)}
-                    className="flex items-center justify-between w-full text-left text-gray-700 hover:bg-gray-100 rounded-md px-2 py-1.5 transition-colors"
+                    className="flex items-center justify-between w-full text-left text-neutral-700 hover:bg-neutral-100 rounded-md px-2 py-1.5 transition-colors"
                   >
                     <div className="flex items-center space-x-2">
                       <RiFolder2Line size={20} />
@@ -181,7 +179,7 @@ const Sidebar: React.FC = () => {
                   {showDropdown && (
                     <ul className="mt-1 ml-6 space-y-1">
                       {loading ? (
-                        <li className="text-sm text-gray-500 py-1">
+                        <li className="text-sm text-neutral-500 py-1">
                           Loading...
                         </li>
                       ) : projects.length > 0 ? (
@@ -193,14 +191,14 @@ const Sidebar: React.FC = () => {
                                   router.push(`/workspace/projects/${project.project_id}`);
                                 }
                               }}
-                              className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 rounded-md px-2 py-1.5 transition-colors"
+                              className="w-full text-left text-sm text-neutral-700 hover:bg-neutral-100 rounded-md px-2 py-1.5 transition-colors"
                             >
                               {project.project_name}
                             </button>
                           </li>
                         ))
                       ) : (
-                        <li className="text-sm text-gray-500 py-1">
+                        <li className="text-sm text-neutral-500 py-1">
                           No projects found
                         </li>
                       )}
@@ -216,7 +214,7 @@ const Sidebar: React.FC = () => {
                               router.push('/workspace/projects/new');
                             }
                           }}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-left text-sm text-indigo-600 hover:bg-gray-100 rounded-md transition-colors"
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-left text-sm text-indigo-600 hover:bg-neutral-100 rounded-md transition-colors"
                         >
                           <span>+ New Project</span>
                         </button>
@@ -228,14 +226,16 @@ const Sidebar: React.FC = () => {
             </ul>
           </div>
 
+          <ThemeToggle/>
+
           <div className="p-4 border-t">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                <RiUserLine size={20} className="text-gray-600" />
+              <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center">
+                <RiUserLine size={20} className="text-neutral-600" />
               </div>
               <div>
-                <p className="font-medium text-gray-800">{user?.fname || "User"}</p>
-                <p className="text-sm text-gray-500">{user?.email || ""}</p>
+                <p className="font-medium text-neutral-800">{user?.fname || "User"}</p>
+                <p className="text-sm text-neutral-500">{user?.email || ""}</p>
               </div>
             </div>
 
@@ -247,7 +247,7 @@ const Sidebar: React.FC = () => {
                         router.push("/login");
                       }
                     }}
-                    className="flex items-center space-x-2 w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100 rounded-md transition-colors"
+                    className="flex items-center space-x-2 w-full px-4 py-2 text-left text-red-600 hover:bg-neutral-100 rounded-md transition-colors"
               >
                 <RiLogoutCircleLine size={20} />
                 <span>Logout</span>

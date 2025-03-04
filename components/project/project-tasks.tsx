@@ -134,7 +134,7 @@ const TaskColumn = ({ title, status, tasks, onDrop, children }: { title: string,
             ref={dropRef} 
             className={`bg-gray-50 p-4 rounded-lg shadow transition-colors duration-200 ${isOver ? 'bg-blue-100 border-2 border-blue-300' : ''}`}
         >
-            <h3 className="font-semibold text-lg mb-4 text-center">{title}</h3>
+            <h3 className="font-semibold text-lg mb-4 text-gray-800 text-center">{title}</h3>
             <div className="min-h-[200px]">
                 {children}
             </div>

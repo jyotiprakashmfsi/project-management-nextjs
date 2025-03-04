@@ -45,7 +45,7 @@ export default function ErrorHandler({ children }: ErrorHandlerProps) {
   // If there's an error, show error UI
   if (hasError) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4">
         <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
           <div className="flex flex-col items-center">
             <div className="text-red-500 mb-4">
@@ -64,8 +64,8 @@ export default function ErrorHandler({ children }: ErrorHandlerProps) {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Something went wrong</h2>
-            <p className="text-gray-600 mb-6 text-center">
+            <h2 className="text-xl font-semibold text-neutral-800 mb-2">Something went wrong</h2>
+            <p className="text-neutral-600 mb-6 text-center">
               {error?.message || 'An unexpected error occurred'}
             </p>
             <Button
