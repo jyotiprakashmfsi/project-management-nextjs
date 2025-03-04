@@ -4,7 +4,7 @@ import Sidebar from "@/components/ui/sidebar";
 
 export default function SettingsPage() {
   return (
-    <div className="flex min-h-screen w-full bg-gray-50">
+    <div className="flex min-h-screen w-full bg-neutral-50">
         <Sidebar />
       <div className="flex-1 w-full">
         <div className="p-8">

@@ -22,7 +22,6 @@ export default function HomeComponent() {
     <div className="min-h-screen bg-gradient-to-b from-white to-indigo-50">
       <nav className="fixed w-full bg-white/80 backdrop-blur-sm shadow-sm z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <ThemeToggle />
 
           <div className="text-2xl font-bold text-indigo-600">
             Project Management
@@ -37,6 +36,7 @@ export default function HomeComponent() {
             >
               {mounted ? (user ? "Dashboard" : "Login") : "Loading..."}
             </button> 
+                <ThemeToggle />
           </div>
         </div>
       </nav>

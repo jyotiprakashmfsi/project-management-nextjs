@@ -183,22 +183,22 @@ export default function TeamsComponent() {
     }, {} as Record<number, { project_name: string; members: TeamMember[] }>);
 
     return (
-        <div className="flex min-h-screen bg-gray-50 text-black">
+        <div className="flex min-h-screen bg-neutral-50 text-black">
             <div className="flex-1 p-8">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-semibold text-gray-900">Team Members</h1>
+                    <h1 className="text-2xl font-semibold text-neutral-900">Team Members</h1>
                 </div>
 
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-900"></div>
                     </div>
                 ) : (
                     <div className="space-y-8">
                         {Object.entries(groupedMembers).map(([projectId, { project_name, members }]) => (
                             <div key={projectId} className="rounded-lg">
                                 <div className="flex justify-between items-center p-6 border-b">
-                                    <h2 className="text-xl font-semibold text-gray-900">{project_name}</h2>
+                                    <h2 className="text-xl font-semibold text-neutral-900">{project_name}</h2>
                                     <button
                                         onClick={() => handleAddMember(Number(projectId))}
                                         className="flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
@@ -207,28 +207,28 @@ export default function TeamsComponent() {
                                         Add Member
                                     </button>
                                 </div>
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
+                                <table className="min-w-full divide-y divide-neutral-200">
+                                    <thead className="bg-neutral-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Name</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Email</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Role</th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="bg-white divide-y divide-neutral-200">
                                         {members.map((member) => (
-                                            <tr key={member.id} className="hover:bg-gray-50">
+                                            <tr key={member.id} className="hover:bg-neutral-50">
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                       
                                                         <div className="">
-                                                            <div className="text-sm font-medium text-gray-900">{member.fname}</div>
+                                                            <div className="text-sm font-medium text-neutral-900">{member.fname}</div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">{member.email}</div>
+                                                    <div className="text-sm text-neutral-900">{member.email}</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     {member.role}
@@ -240,15 +240,15 @@ export default function TeamsComponent() {
                                                                 e.stopPropagation();
                                                                 setOpenMenuId(openMenuId === member.id ? null : member.id);
                                                             }}
-                                                            className="p-1 hover:bg-gray-100 rounded-full"
+                                                            className="p-1 hover:bg-neutral-100 rounded-full"
                                                         >
-                                                            <BsThreeDotsVertical className="text-gray-500" />
+                                                            <BsThreeDotsVertical className="text-neutral-500" />
                                                         </button>
                                                         {openMenuId === member.id && (
                                                             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
                                                                 <button
                                                                     onClick={() => handleEditMember(member)}
-                                                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                    className="block w-full text-left px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100"
                                                                 >
                                                                     Edit
                                                                 </button>
@@ -272,17 +272,17 @@ export default function TeamsComponent() {
                 )}
 
                 {showAddMemberModal && (
-                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+                    <div className="fixed inset-0 bg-neutral-600 bg-opacity-50 flex items-center justify-center">
                         <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Add Team Member</h3>
+                            <h3 className="text-lg font-medium text-neutral-900 mb-4">Add Team Member</h3>
                             <form onSubmit={handleSubmitAddMember}>
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Select User</label>
+                                        <label className="block text-sm font-medium text-neutral-700">Select User</label>
                                         <select
                                             value={formData.user_id}
                                             onChange={(e) => setFormData(prev => ({ ...prev, user_id: Number(e.target.value) }))}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            className="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                         >
                                             <option value="">Select a user</option>
                                             {availableUsers.map(user => (
@@ -293,11 +293,11 @@ export default function TeamsComponent() {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Role</label>
+                                        <label className="block text-sm font-medium text-neutral-700">Role</label>
                                         <select
                                             value={formData.role}
                                             onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            className="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                         >
                                             <option value="member">Member</option>
                                             <option value="admin">Admin</option>
@@ -308,7 +308,7 @@ export default function TeamsComponent() {
                                     <button
                                         type="button"
                                         onClick={() => setShowAddMemberModal(false)}
-                                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                                        className="px-4 py-2 text-sm font-medium text-neutral-700 bg-neutral-100 rounded-md hover:bg-neutral-200"
                                     >
                                         Cancel
                                     </button>
@@ -326,23 +326,23 @@ export default function TeamsComponent() {
 
                 {/* Edit Member Modal */}
                 {showEditModal && selectedMember && (
-                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+                    <div className="fixed inset-0 bg-neutral-600 bg-opacity-50 flex items-center justify-center">
                         <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Edit Team Member Role</h3>
+                            <h3 className="text-lg font-medium text-neutral-900 mb-4">Edit Team Member Role</h3>
                             <form onSubmit={handleSubmitEditMember}>
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Member</label>
-                                        <div className="mt-1 text-sm text-gray-900">
+                                        <label className="block text-sm font-medium text-neutral-700">Member</label>
+                                        <div className="mt-1 text-sm text-neutral-900">
                                             {selectedMember.fname} ({selectedMember.email})
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Role</label>
+                                        <label className="block text-sm font-medium text-neutral-700">Role</label>
                                         <select
                                             value={formData.role}
                                             onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            className="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                         >
                                             <option value="member">Member</option>
                                             <option value="admin">Admin</option>
@@ -353,7 +353,7 @@ export default function TeamsComponent() {
                                     <button
                                         type="button"
                                         onClick={() => setShowEditModal(false)}
-                                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                                        className="px-4 py-2 text-sm font-medium text-neutral-700 bg-neutral-100 rounded-md hover:bg-neutral-200"
                                     >
                                         Cancel
                                     </button>

@@ -23,7 +23,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Apply theme class to document
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light-theme', 'dark-theme');
@@ -35,7 +34,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.classList.add(`${theme}-theme`);
     }
     
-    // Save theme preference to cookie
     Cookies.set('theme', theme, { expires: 365 });
   }, [theme]);
 
