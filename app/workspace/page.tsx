@@ -1,4 +1,5 @@
-import Sidebar from "@/components/sidebar";
+import DashboardComponent from "@/components/dashboard";
+import Sidebar from "@/components/ui/sidebar";
 
 export default function ProjectPage() {
   return (
@@ -10,11 +11,11 @@ export default function ProjectPage() {
             <div className="text-black/70 flex gap-2 items-center mb-6">
               <span className="hover:text-black">Tasks Scheduler</span>
               <span>/</span>
-              <span className="text-black">Project</span>
+              <span className="text-black">Dashboard</span>
             </div>
             {/* <NotificationComponent /> */}
           </div>
-          <p>Hello</p>
+          <DashboardComponent />
         </div>
       </div>
     </div>

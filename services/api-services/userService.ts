@@ -1,7 +1,7 @@
 import { UserRepository } from "../../repository/userRepository";
 import { UserUpdateData } from "../../types/user";
 import { getLocalTimeString } from "../../helper/date";
-import sequelize from "@/db/models";
+import { sequelize } from "@/db/models";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -27,7 +27,9 @@ export class UserService {
             updateData.dob = getLocalTimeString(new Date(updateData.dob));
         }
 
-        return await this.userRepository.updateUser(userId, updateData);
+        const result = await this.userRepository.updateUser(userId, updateData);
+        
+        return { id: userId, ...updateData };
     }
 
     async deleteUser(userId: string) {

@@ -6,7 +6,7 @@ export interface Task {
     status: string;
     end_time: string;
     assigned_to: number;
-    task_json: {};
+    task_json: any;
     priority: string;
     createdAt?: string;
     updatedAt?: string;
@@ -19,7 +19,7 @@ export interface TaskCreateData {
     status: string;
     end_time: string;
     assigned_to: number;
-    task_json: {};
+    task_json: any;
     priority: string;
     createdAt?: string;
     updatedAt?: string;

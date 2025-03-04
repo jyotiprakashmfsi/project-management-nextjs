@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const myPlaintextPassword = 's0/\/\P4$$w0rD';
 
 export const hashPassword = async (pwd: string)  =>{
     const hash = bcrypt.hashSync(pwd, saltRounds);
@@ -8,7 +7,5 @@ export const hashPassword = async (pwd: string)  =>{
 }
 
 export const checkPassword = async (pwd :string, hash: string) => {
-    bcrypt.compare(myPlaintextPassword, hash, function(result: any) {
-        return result==true;
-    });
+    return bcrypt.compareSync(pwd, hash);
 }

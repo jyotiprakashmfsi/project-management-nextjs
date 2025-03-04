@@ -117,6 +117,22 @@ export class TaskRepository {
             throw error;
         }
     }
+    async getUserTasks(userId: number, pagination: PaginationParams): Promise<{ tasks: Task[], total: number }> {
+        try {
+            const { page, limit } = pagination;
+            const offset = (page - 1) * limit;
+            
+            const [tasks, total] = await sequelize.query(
+                `SELECT * FROM tasks WHERE assigned_to = ? LIMIT ? OFFSET ?`,
+                { replacements: [userId, limit, offset] }
+            );
+            
+            return { tasks: tasks as Task[], total: parseInt(total as string) };
+        } catch (error) {
+            console.error('Error in getUserTasks:', error);
+            throw error;
+        }
+    }
 
     async deleteTask(id: number): Promise<boolean> {
         const [result] = await sequelize.query(

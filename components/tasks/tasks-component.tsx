@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Task, TaskCreateData } from '../../types/task';
-import { taskApi } from '../../services/tasks/api';
 import toast from 'react-hot-toast';
 import { RiAddLine, RiEditLine, RiDeleteBinLine } from 'react-icons/ri';
-import { usersService } from '../../services/user/api';
-import { projectUserApi } from '../../services/project-users/api';
+import { taskApi } from '@/services/client-services/tasks/api';
+import { usersService } from '@/services/client-services/user/api';
+import { projectUserApi } from '@/services/client-services/project-users/api';
 
 interface User {
     id: number;
@@ -31,7 +31,8 @@ export default function TasksComponent() {
         end_time: new Date().toISOString().split('T')[0],
         project_id: 0,
         assigned_to: 0,
-        priority: 'medium'
+        priority: 'medium',
+        task_json: {}
     });
 
     useEffect(() => {
@@ -124,7 +125,8 @@ export default function TasksComponent() {
             end_time: new Date().toISOString().split('T')[0],
             project_id: 0,
             assigned_to: 0,
-            priority: 'medium'
+            priority: 'medium',
+            task_json: {}
         });
         setSelectedTask(null);
     };
@@ -138,7 +140,8 @@ export default function TasksComponent() {
             end_time: task.end_time.split('T')[0],
             project_id: task.project_id,
             assigned_to: task.assigned_to,
-            priority: task.priority || 'medium'
+            priority: task.priority || 'medium',
+            task_json: {},
         });
         setShowEditModal(true);
     };

@@ -84,29 +84,36 @@ function Signup() {
         setLoading(true);
 
         try {
-            const signupResponse = await authService.signup({
+            console.log('Starting signup process...');
+            
+            // First create the user account
+            const signupData = {
                 fname: formData.fname + " " + formData.lname,
                 email: formData.email,
                 password: formData.password
-            });
-            console.log("signupResponse", signupResponse)
-            toast.success('Account created successfully!');
-
+            };
+            
+            console.log('Submitting signup data...');
+            const signupResponse = await authService.signup(signupData);
+            console.log("Signup response:", signupResponse);
+            
+            // Now attempt to log in with the new credentials
+            console.log('Attempting to login with new credentials...');
             const loginResponse = await authService.login({
                 email: formData.email,
                 password: formData.password
             });
 
-            console.log("loginResponse", loginResponse) 
+            console.log("Login response:", loginResponse);
 
             if (!loginResponse.user || !loginResponse.token) {
                 console.error("Login response missing user or token:", loginResponse);
-                toast.error('Login response missing user or token');
+                toast.error('Login failed after account creation. Please try logging in manually.');
                 setLoading(false);
+                router.push('/login');
                 return;
             }
             
-            console.log("loginResponse", loginResponse);
             console.log("Setting token:", loginResponse.token);
             console.log("Setting user:", loginResponse.user);
             
@@ -122,8 +129,8 @@ function Signup() {
 
             router.push('/workspace/projects/new');
         } catch (err: any) {
+            console.error('Error during signup/login process:', err);
             toast.error(err.message || 'Failed to create account');
-        } finally {
             setLoading(false);
         }
     };

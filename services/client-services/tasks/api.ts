@@ -32,6 +32,16 @@ export const taskApi = {
         return response.json();
     },
 
+    getUserTasks: async (userId: number): Promise<any> => {
+        const response = await fetch(`/api/tasks/user/${userId}`, {
+            method: 'GET',
+            headers: getHeaders()
+        });
+        
+        if (!response.ok) throw new Error('Failed to fetch user tasks');
+        return response.json();
+    },
+
     getProjectTasksByStatus: async (projectId: number, status: 'not-started' | 'started' | 'finished'): Promise<Task[]> => {
         const response = await fetch(`/api/tasks/project/${status}/${projectId}`, {
             method: 'GET',
