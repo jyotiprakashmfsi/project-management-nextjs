@@ -3,6 +3,7 @@ import { sequelize } from '../db/models/index';
 
 export class AuthRepository {
     async createUser(userData: UserData, hashedPassword: string): Promise<void> {
+        console.log("Got request to create use with data: ", userData)
         try {            
             await sequelize.query(
                 'INSERT INTO users (fname, email, password, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)',

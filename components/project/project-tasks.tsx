@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Task } from "../../types/task";
 import TaskModal from "../tasks/task-modal";
+import TaskSlider from "../tasks/task-slider";
 import toast from "react-hot-toast";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { projectUserApi } from "@/services/client-services/project-users/api";
@@ -44,8 +45,9 @@ const TaskCard = ({
     getAssignedUserName, 
     openMenuId, 
     setOpenMenuId,
-    onDrop
-}: {task: Task, onEdit: (task: Task) => void, onDelete: (id: number) => void, onView: (id: number) => void, getAssignedUserName: (id: number) => string, openMenuId: number | null, setOpenMenuId: React.Dispatch<React.SetStateAction<number | null>>, onDrop: (id: number, status: string) => void}) => {
+    onDrop,
+    projectId
+}: {task: Task, onEdit: (task: Task) => void, onDelete: (id: number) => void, onView: (id: number) => void, getAssignedUserName: (id: number) => string, openMenuId: number | null, setOpenMenuId: React.Dispatch<React.SetStateAction<number | null>>, onDrop: (id: number, status: string) => void, projectId: number}) => {
     const dragRef = useRef<HTMLDivElement>(null);
     const [{ isDragging }, drag] = useDrag(() => ({
         type: ItemTypes.TASK,
@@ -56,6 +58,8 @@ const TaskCard = ({
     }));
     
     drag(dragRef);
+    const router = useRouter();
+
 
     return (
         <div
@@ -86,6 +90,12 @@ const TaskCard = ({
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
+                                onClick={() => router?.push(`${projectId}/task/${task.id}`)}
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                                View Details
+                            </button>
+                            <button
                                 onClick={() => onEdit(task)}
                                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >
@@ -102,7 +112,7 @@ const TaskCard = ({
                 </div>
             </div>
             <p className="text-gray-600 text-sm mb-2 line-clamp-2">{task.description}</p>
-            <div className="flex justify-between flex-col md:flex-row sm:items-center items-start text-sm text-gray-500">
+            <div className="flex justify-between flex-col md:flex-row sm:items-center items-start text-sm text-gray-500 mb-3">
                 <span>Due: {new Date(task.end_time).toLocaleDateString()}</span>
                 <span className="flex items-center gap-1">
                     <span className={`w-2 h-2 rounded-full ${
@@ -151,6 +161,8 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
     const [projectUsers, setProjectUsers] = useState<ProjectUser[]>([]);
     const [openMenuId, setOpenMenuId] = useState<number | null>(null);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
+    const [isSliderOpen, setIsSliderOpen] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 
     const fetchProjectUsers = async () => {
         try {
@@ -166,6 +178,7 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
         try {
             setLoading(true);
             const projectTasks = await taskApi.getProjectTasks(projectId);
+            console.log("Tasks fetched:", projectTasks);
             setTasks(projectTasks);
         } catch (error) {
             toast.error("Failed to fetch project tasks");
@@ -206,7 +219,8 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
     };
 
     const handleViewTask = (taskId: number) => {
-        router?.push(`${projectId}/task/${taskId}`);
+        setSelectedTaskId(taskId);
+        setIsSliderOpen(true);
     };
 
     const getAssignedUserName = (userId: number) => {
@@ -287,6 +301,7 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
                                         openMenuId={openMenuId}
                                         setOpenMenuId={setOpenMenuId}
                                         onDrop={handleTaskDrop}
+                                        projectId={projectId}
                                     />
                                 ))
                             ) : (
@@ -314,6 +329,7 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
                                         openMenuId={openMenuId}
                                         setOpenMenuId={setOpenMenuId}
                                         onDrop={handleTaskDrop}
+                                        projectId={projectId}
                                     />
                                 ))
                             ) : (
@@ -341,6 +357,7 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
                                         openMenuId={openMenuId}
                                         setOpenMenuId={setOpenMenuId}
                                         onDrop={handleTaskDrop}
+                                        projectId={projectId}
                                     />
                                 ))
                             ) : (
@@ -362,6 +379,13 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
                         }}
                     />
                 )}
+
+                <TaskSlider
+                    taskId={selectedTaskId}
+                    isOpen={isSliderOpen}
+                    onClose={() => setIsSliderOpen(false)}
+                    onTaskUpdated={fetchTasks}
+                />
             </div>
         </DndProvider>
     );

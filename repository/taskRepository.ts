@@ -5,6 +5,7 @@ import { getLocalTimeString } from '../helper/date';
 export class TaskRepository {
     async createTask(taskData: TaskCreateData): Promise<Task | null> {
         const mysqlEndTime = getLocalTimeString(new Date(taskData.end_time));
+        console.log("end time for the task is: ", mysqlEndTime);
         const currentTime = getLocalTimeString(new Date());
 
         console.log("taskData", taskData);

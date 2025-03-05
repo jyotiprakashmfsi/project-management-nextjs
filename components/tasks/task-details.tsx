@@ -178,30 +178,30 @@ export default function TaskDetails() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
                     <div className="flex items-center gap-2">
-                        <BsPerson className="text-neutral-400" />
+                        <BsPerson className="text-neutral-600" />
                         <div>
-                            <div className="text-sm text-neutral-500">Assigned To</div>
+                            <div className="text-sm text-neutral-600">Assigned To</div>
                             <div className="font-medium">{getAssignedUserName(task.assigned_to)}</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <BsCalendar3 className="text-neutral-400" />
                         <div>
-                            <div className="text-sm text-neutral-500">Due Date</div>
+                            <div className="text-sm text-neutral-600">Due Date</div>
                             <div className="font-medium">{getLocalTimeString(new Date(task.end_time))}</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <BsFlag className="text-neutral-400" />
                         <div>
-                            <div className="text-sm text-neutral-500">Priority</div>
+                            <div className="text-sm text-neutral-600">Priority</div>
                             <div className="font-medium capitalize">{task.priority}</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <BsClock className="text-neutral-400" />
                         <div>
-                            <div className="text-sm text-neutral-500">Status</div>
+                            <div className="text-sm text-neutral-600">Status</div>
                             <div className={`font-medium capitalize ${
                                 task.status === 'completed' ? 'text-green-600' :
                                 task.status === 'in-progress' ? 'text-blue-600' :
@@ -221,7 +221,7 @@ export default function TaskDetails() {
                         {task.task_json?.messages.map((message: any, index: any) => (
                             <div key={index} className="flex mb-3">
                                 <div className="flex items-start gap-2 text-neutral-600">
-                                    <span className="text-neutral-400 min-w-[150px]">{getLocalTimeString(new Date(message.posted_at))}</span>
+                                    <span className="text-neutral-500 min-w-[150px]">{getLocalTimeString(new Date(message.posted_at))}</span>
                                     <span className="text-blue-600 min-w-[120px]">{getAssignedUserName(message.posted_by)}</span>
                                     <span>{message.content}</span>
                                 </div>
@@ -245,49 +245,6 @@ export default function TaskDetails() {
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
-                </div>
-
-                <div className="p-4 bg-white border-t">
-                    {uploadedFiles.length > 0 && (
-                        <div className="mb-2 flex flex-wrap gap-2">
-                            {uploadedFiles.map((file, index) => (
-                                <div key={index} className="flex items-center gap-2 bg-neutral-100 px-3 py-1 rounded-full text-sm">
-                                    <BsPaperclip className="text-neutral-500" />
-                                    <span className="text-neutral-700">{file.filename}</span>
-                                    <button
-                                        onClick={() => setUploadedFiles(files => files.filter((_, i) => i !== index))}
-                                        className="text-red-500 hover:text-red-700"
-                                    >
-                                        ×
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    <form onSubmit={handleAddMessage} className="flex gap-2">
-                        <input
-                            type="text"
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            placeholder="Type a message..."
-                            className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <button
-                            type="button"
-                            onClick={handleFileUpload}
-                            className="px-4 py-2 bg-neutral-100 text-neutral-700 rounded-md hover:bg-neutral-200 transition-colors flex items-center gap-2"
-                        >
-                            <BsPaperclip />
-                            Attach
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={!newMessage.trim() && uploadedFiles.length === 0}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-neutral-400"
-                        >
-                            Send
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>

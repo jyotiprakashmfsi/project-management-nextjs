@@ -5,14 +5,13 @@ WORKDIR /app
 
 # Install dependencies only when needed
 FROM base AS deps
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm ci
 
 # Development image, copy all the files and run in dev mode
 FROM base AS development
 WORKDIR /app
 
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Install debugging tools
@@ -30,7 +29,6 @@ CMD ["npm", "run", "dev"]
 # Build the application for production
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build the application

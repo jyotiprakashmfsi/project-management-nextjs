@@ -4,6 +4,10 @@ export const getLocalTimeString = (date: Date) => {
     return localDate.toISOString().slice(0, 19).replace('T', ' ');
   };
 
+  export const formatDate = (date: string)=>{
+    return date.slice(0,19).replace('T', ' ');
+  }
+
 export const isOverdue = (endTime: string) => {
     const endDate = new Date(endTime);
     const now = new Date();

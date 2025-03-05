@@ -6,25 +6,73 @@ import { toast } from 'react-hot-toast';
 import { authService } from "@/services/client-services/auth/api";
 import { useRouter } from "next/navigation";
 
+interface ValidationErrors {
+  email?: string;
+  password?: string;
+}
+
 function Login() {
   const { setUser, setToken } = useUser();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  const validateField = (name: string, value: string) => {
+    const errors: ValidationErrors = { ...validationErrors };
+    
+    if (name === 'email') {
+      if (!value) {
+        errors.email = 'Email is required';
+      } else if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        errors.email = 'Please enter a valid email address';
+      } else {
+        delete errors.email;
+      }
+    }
+    
+    if (name === 'password') {
+      if (!value) {
+        errors.password = 'Password is required';
+      } else if (value.length < 8) {
+        errors.password = 'Password must be at least 8 characters';
+      } else {
+        delete errors.password;
+      }
+    }
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    validateField(name, value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all fields before submission
+    const isEmailValid = validateField('email', formData.email);
+    const isPasswordValid = validateField('password', formData.password);
+    
+    if (!isEmailValid || !isPasswordValid) {
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -95,7 +143,11 @@ function Login() {
                 className="mt-1 appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.email}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+              {validationErrors.email && (
+                <p className="mt-2 text-sm text-red-600">{validationErrors.email}</p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -110,6 +162,7 @@ function Login() {
                   className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   value={formData.password}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <button
                   type="button"
@@ -123,6 +176,9 @@ function Login() {
                   )}
                 </button>
               </div>
+              {validationErrors.password && (
+                <p className="mt-2 text-sm text-red-600">{validationErrors.password}</p>
+              )}
             </div>
           </div>
 
