@@ -26,6 +26,13 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
         }
     });
     const [users, setUsers] = useState<{ id: number; fname: string; user_id: number }[]>([]);
+    const [errors, setErrors] = useState<{
+        title?: string;
+        description?: string;
+        assigned_to?: string;
+        priority?: string;
+        end_time?: string;
+    }>({});
 
     useEffect(() => {
         fetchUsers();
@@ -57,6 +64,8 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                 }
             });
         }
+        // Clear errors when task changes
+        setErrors({});
     }, [task, projectId]);
 
     const fetchUsers = async () => {
@@ -69,10 +78,91 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
         }
     };
 
+    const validateField = (name: string, value: any) => {
+        let error = '';
+        
+        switch (name) {
+            case 'title':
+                if (!value.trim()) {
+                    error = 'Title is required';
+                } else if (value.trim().length < 3) {
+                    error = 'Title must be at least 3 characters';
+                } else if (value.trim().length > 100) {
+                    error = 'Title must be less than 100 characters';
+                }
+                break;
+            case 'description':
+                if (value.trim().length > 500) {
+                    error = 'Description must be less than 500 characters';
+                }
+                break;
+            case 'assigned_to':
+                if (!value) {
+                    error = 'Please assign this task to a user';
+                }
+                break;
+            case 'end_time':
+                if (!value) {
+                    error = 'End time is required';
+                } else {
+                    const endDate = new Date(value);
+                    const today = new Date();
+                    if (endDate < today) {
+                        error = 'End time cannot be in the past';
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+        return error;
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        const error = validateField(name, value);
+        
+        setErrors(prev => ({
+            ...prev,
+            [name]: error
+        }));
+    };
+
+    const handleChange = (name: string, value: any) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        
+        // Clear error when user starts typing again
+        if (errors[name as keyof typeof errors]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log("formData", formData)
+        // Validate all fields before submission
+        const newErrors: any = {};
+        Object.entries(formData).forEach(([key, value]) => {
+            if (['title', 'description', 'assigned_to', 'end_time'].includes(key)) {
+                const error = validateField(key, value);
+                if (error) {
+                    newErrors[key] = error;
+                }
+            }
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            toast.error('Please fix the errors before submitting');
+            return;
+        }
         
         try {
             if (task) {
@@ -107,11 +197,16 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                             <input
                                 type="text"
                                 id="title"
+                                name="title"
                                 value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                onChange={(e) => handleChange('title', e.target.value)}
+                                onBlur={handleBlur}
+                                className={`mt-1 block w-full rounded-md border ${errors.title ? 'border-red-500' : 'border-gray-300'} px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm`}
                                 required
                             />
+                            {errors.title && (
+                                <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+                            )}
                         </div>
 
                         <div>
@@ -120,11 +215,16 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                             </label>
                             <textarea
                                 id="description"
+                                name="description"
                                 value={formData.description}
-                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                onChange={(e) => handleChange('description', e.target.value)}
+                                onBlur={handleBlur}
                                 rows={3}
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                className={`mt-1 block w-full rounded-md border ${errors.description ? 'border-red-500' : 'border-gray-300'} px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm`}
                             />
+                            {errors.description && (
+                                <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                            )}
                         </div>
 
                         <div>
@@ -133,9 +233,11 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                             </label>
                             <select
                                 id="assigned_to"
+                                name="assigned_to"
                                 value={formData.assigned_to}
-                                onChange={(e) => setFormData({ ...formData, assigned_to: Number(e.target.value) })}
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                onChange={(e) => handleChange('assigned_to', Number(e.target.value))}
+                                onBlur={handleBlur}
+                                className={`mt-1 block w-full rounded-md border ${errors.assigned_to ? 'border-red-500' : 'border-gray-300'} px-3 py-2 text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm`}
                                 required
                             >
                                 <option value="">Select User</option>
@@ -143,6 +245,9 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                                     <option key={user.id} value={user.user_id}>{user.fname}</option>
                                 ))}
                             </select>
+                            {errors.assigned_to && (
+                                <p className="mt-1 text-sm text-red-600">{errors.assigned_to}</p>
+                            )}
                         </div>
 
                         {/* <div>
@@ -167,8 +272,9 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                             </label>
                             <select
                                 id="priority"
+                                name="priority"
                                 value={formData.priority}
-                                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                                onChange={(e) => handleChange('priority', e.target.value)}
                                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                             >
                                 <option value="low">Low</option>
@@ -185,10 +291,14 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                                 type="datetime-local"
                                 name="end_time"
                                 value={formData.end_time}
-                                onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-                                className="mt-1 p-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                onChange={(e) => handleChange('end_time', e.target.value)}
+                                onBlur={handleBlur}
+                                className={`mt-1 p-1 block w-full rounded-md border ${errors.end_time ? 'border-red-500' : 'border-gray-300'} shadow-sm focus:border-indigo-500 focus:ring-indigo-500`}
                                 required
                             />
+                            {errors.end_time && (
+                                <p className="mt-1 text-sm text-red-600">{errors.end_time}</p>
+                            )}
                         </div>
 
                         <div className="mt-6 flex justify-end space-x-3">
