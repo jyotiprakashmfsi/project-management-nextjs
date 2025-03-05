@@ -1,7 +1,8 @@
-import ProjectComponent from "@/components/project/project-component";
+import SettingsComponent from "@/components/settings/settings-component";
 import Sidebar from "@/components/ui/sidebar";
 
-export default function ProjectPage() {
+
+export default function SettingsPageComponent() {
   return (
     <div className="flex min-h-screen w-full bg-neutral-50">
         <Sidebar />
@@ -11,10 +12,10 @@ export default function ProjectPage() {
             <div className="text-black/70 flex gap-2 items-center mb-6">
               <span className="hover:text-black">Tasks Scheduler</span>
               <span>/</span>
-              <span className="text-black">Project</span>
+              <span className="text-black">Settings</span>
             </div>
           </div>
-          <ProjectComponent/>
+          <SettingsComponent />
         </div>
       </div>
     </div>

@@ -13,7 +13,6 @@ export default function TeamsPage() {
               <span>/</span>
               <span className="text-black">Teams</span>
             </div>
-            {/* <NotificationComponent /> */}
           </div>
           <TeamsComponent/>
         </div>

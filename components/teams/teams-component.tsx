@@ -60,17 +60,15 @@ export default function TeamsComponent() {
         try {
             const response = await usersService.getAllUsers();
             if (response && response.users) {
-                console.log("API Users fetched:", response.users)
                 const projectMembers = teamMembers.filter(member => member.project_id === selectedProject);
                 const projectMemberIds = new Set(projectMembers.map(member => member.user_id));
                 const filteredUsers = response.users.filter((u: any) => !projectMemberIds.has(u.id));
                 setAvailableUsers(filteredUsers);
             } else {
-                console.error('Unexpected response format:', response);
+                toast.error("Unexpected response format")
                 setAvailableUsers([]);
             }
         } catch (error: any) {
-            console.error('Error fetching users:', error);
             toast.error('Failed to fetch users');
             setAvailableUsers([]);
         }
@@ -86,11 +84,10 @@ export default function TeamsComponent() {
             } else if (response && response.data && Array.isArray(response.data)) {
                 setTeamMembers(response.data);
             } else {
-                console.error('Unexpected response format:', response);
+                toast.error("Unexpected response format")
                 setTeamMembers([]);
             }
         } catch (error: any) {
-            console.error('Error fetching team members:', error);
             toast.error(error.message || 'Failed to fetch team members');
             setTeamMembers([]);
         } finally {
@@ -122,7 +119,6 @@ export default function TeamsComponent() {
             toast.success('Team member removed successfully');
             fetchTeamMembers();
         } catch (error: any) {
-            console.error('Error removing team member:', error);
             toast.error(error.message || 'Failed to remove team member');
         }
     };
@@ -139,16 +135,13 @@ export default function TeamsComponent() {
                 user_id: formData.user_id,
                 role: formData.role
             });
-            console.log(response)
                 toast.success('Team member added successfully');
                 setShowAddMemberModal(false);
                 fetchTeamMembers();
-                console.error('Unexpected response format:', response);
                 toast.error('Failed to add team member');
             
             setFormData({ user_id: 0, role: 'member', projectId: 0 });
         } catch (error: any) {
-            console.error('Error adding team member:', error);
             toast.error(error.message || 'Failed to add team member');
         }
     };
@@ -166,7 +159,6 @@ export default function TeamsComponent() {
             setShowEditModal(false);
             fetchTeamMembers();
         } catch (error: any) {
-            console.error('Error updating team member role:', error);
             toast.error(error.message || 'Failed to update team member role');
         }
     };

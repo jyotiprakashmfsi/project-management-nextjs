@@ -56,7 +56,7 @@ export default function TaskSlider({
       const response = await projectUserApi.getProjectUsers(projectId);
       setProjectUsers(response.users);
     } catch (error) {
-      console.error("Failed to fetch project users:", error);
+      toast.error("Failed to fetch project users");
     }
   };
 
@@ -70,7 +70,6 @@ export default function TaskSlider({
         fetchProjectUsers(taskData.task.project_id);
       }
     } catch (error) {
-      console.error("Error fetching task:", error);
       toast.error("Failed to fetch task details");
     } finally {
       setLoading(false);
@@ -110,7 +109,6 @@ export default function TaskSlider({
         })
         .open();
     } catch (error) {
-      console.error("Error uploading file:", error);
       toast.error("Failed to upload file");
     }
   };
@@ -143,7 +141,6 @@ export default function TaskSlider({
       onTaskUpdated();
       toast.success("Message added successfully");
     } catch (error) {
-      console.error("Error adding message:", error);
       toast.error("Failed to add message");
     }
   };
@@ -172,7 +169,6 @@ export default function TaskSlider({
       onTaskUpdated();
       toast.success("Task marked as complete");
     } catch (error) {
-      console.error("Error updating task status:", error);
       toast.error("Failed to update task status");
     }
   };
@@ -279,43 +275,40 @@ export default function TaskSlider({
                   <div className="flex-1 overflow-y-auto">
                     <h3 className="text-lg font-medium mb-2">Activity</h3>
                     <div className="flex-1 overflow-y-auto p-6">
-                              <div className="space-y-2 font-mono text-sm">
-                                {task.task_json?.messages.map(
-                                  (message: any, index: any) => (
-                                    <div key={index} className="flex mb-3">
-                                      <div className="flex items-start gap-2 text-neutral-600">
-                                        <span className="text-blue-600 min-w-[120px]">
-                                          {getAssignedUserName(
-                                            message.posted_by
-                                          )}
-                                        </span>
-                                        <span>{message.content}</span>
-                                      </div>
-                                      {message.files &&
-                                        message.files.length > 0 && (
-                                          <div className=" ml-4 flex flex-col gap-1">
-                                            {message.files.map(
-                                              (file: any, fileIndex: any) => (
-                                                <a
-                                                  key={fileIndex}
-                                                  href={file.url}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-                                                >
-                                                  <BsDownload className="text-sm" />
-                                                  {file.filename}
-                                                </a>
-                                              )
-                                            )}
-                                          </div>
-                                        )}
-                                    </div>
-                                  )
-                                )}
-                                <div ref={messagesEndRef} />
+                      <div className="space-y-2 font-mono text-sm">
+                        {task.task_json?.messages.map(
+                          (message: any, index: any) => (
+                            <div key={index} className="flex mb-3">
+                              <div className="flex items-start gap-2 text-neutral-600">
+                                <span className="text-blue-600 min-w-[120px]">
+                                  {getAssignedUserName(message.posted_by)}
+                                </span>
+                                <span>{message.content}</span>
                               </div>
+                              {message.files && message.files.length > 0 && (
+                                <div className=" ml-4 flex flex-col gap-1">
+                                  {message.files.map(
+                                    (file: any, fileIndex: any) => (
+                                      <a
+                                        key={fileIndex}
+                                        href={file.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                                      >
+                                        <BsDownload className="text-sm" />
+                                        {file.filename}
+                                      </a>
+                                    )
+                                  )}
+                                </div>
+                              )}
                             </div>
+                          )
+                        )}
+                        <div ref={messagesEndRef} />
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

@@ -167,10 +167,9 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
     const fetchProjectUsers = async () => {
         try {
             const users = await projectUserApi.getProjectUsers(projectId);
-            console.log("users", users);
             setProjectUsers(users.users);
         } catch (error) {
-            console.error("Failed to fetch project users:", error);
+            toast.error("Failed to fetch project users")
         }
     };
 
@@ -178,7 +177,6 @@ export default function ProjectTasks({ projectId }: ProjectTasksProps) {
         try {
             setLoading(true);
             const projectTasks = await taskApi.getProjectTasks(projectId);
-            console.log("Tasks fetched:", projectTasks);
             setTasks(projectTasks);
         } catch (error) {
             toast.error("Failed to fetch project tasks");

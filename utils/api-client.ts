@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import { handleApiError, AppError, ErrorType } from './error-utils';
 import { errorLogger } from './error-logger';
 import Cookies from "js-cookie";
+import { setupInterceptors, addRetryInterceptor } from './interceptors';
 
 
 const apiClient: AxiosInstance = axios.create({
@@ -12,66 +13,31 @@ const apiClient: AxiosInstance = axios.create({
   },
 });
 
-apiClient.interceptors.request.use(
-  (config: any) => {
-    const token = Cookies.get('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    
-    config.headers['x-request-time'] = new Date().toISOString();
-    
-    return config;
-  },
-  (error: any) => {
-    // Log request errors
-    errorLogger.logError({
-      message: 'API Request Error',
-      additionalData: { error },
-    });
-    
-    return Promise.reject(error);
-  }
-);
-
-apiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
-  (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      // Redirect to login page if not already there
-      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-        Cookies.remove('token');
-        Cookies.remove('user');
-        
-        // Redirect to login
-        window.location.href = '/login?session=expired';
-      }
-    }
-    
-    // Log the error
-    errorLogger.logError({
-      message: 'API Response Error',
-      additionalData: {
-        url: error.config?.url,
-        method: error.config?.method,
-        status: error.response?.status,
-        data: error.response?.data,
-      },
-    });
-    
+// Setup interceptors with our utility
+setupInterceptors(apiClient, {
+  enableLogging: true,
+  enableTiming: true,
+  enableAuthHandling: true,
+  customErrorHandler: (error: AxiosError) => {
     // Convert to AppError and reject
     const appError = handleApiError(error);
     return Promise.reject(appError);
   }
-);
+});
+
+// Add retry mechanism for certain endpoints
+addRetryInterceptor(apiClient, 3, 1000, [408, 429, 500, 502, 503, 504]);
 
 export async function apiRequest<T = any>(
   config: AxiosRequestConfig
 ): Promise<T> {
   try {
-    const response = await apiClient(config);
+    const configWithRetry = {
+      ...config,
+      retry: true
+    };
+    
+    const response = await apiClient(configWithRetry);
     return response.data;
   } catch (error) {
     throw error;

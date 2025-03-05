@@ -56,7 +56,7 @@ const Sidebar: React.FC = () => {
   }, []);
 
   const menuItems = [
-    { path: "/", label: "Home", icon: <RiHomeSmile2Line size={20} /> },
+    // { path: "/", label: "Home", icon: <RiHomeSmile2Line size={20} /> },
     {
       path: "/workspace",
       label: "Dashboard",
@@ -95,7 +95,6 @@ const Sidebar: React.FC = () => {
     try {
       if (!user?.id) throw new Error('User not found');
       const userProjects = await projectUserApi.getUserProjects(user!.id);
-      console.log("userProjects", userProjects)
       setProjects(userProjects);
     } catch (error: any) {
       toast.error(error.message || 'Failed to fetch projects');

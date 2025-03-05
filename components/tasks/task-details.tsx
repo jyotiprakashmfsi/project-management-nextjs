@@ -39,7 +39,7 @@ export default function TaskDetails() {
             const response = await projectUserApi.getProjectUsers(projectId);
             setProjectUsers(response.users);
         } catch (error) {
-            console.error("Failed to fetch project users:", error);
+            toast.error("Failed to fetch project users.")
         }
     };
 
@@ -47,15 +47,13 @@ export default function TaskDetails() {
         if (!taskId) return;
         try {
             setLoading(true);
-            // console.log("Params are: ", params);
             const taskData = await taskApi.getTaskById(parseInt(taskId));
             setTask(taskData.task);
-            console.log("taskData", taskData)
+
             if (taskData.task.project_id) {
                 fetchProjectUsers(taskData.task.project_id);
             }
         } catch (error) {
-            console.error("Error fetching task:", error);
             toast.error("Failed to fetch task details");
         } finally {
             setLoading(false);
@@ -90,9 +88,7 @@ export default function TaskDetails() {
                     toast.success("Files uploaded successfully");
                 }
             }).open();
-            console.log("result", result)
         } catch (error) {
-            console.error("Error uploading file:", error);
             toast.error("Failed to upload file");
         }
     };
@@ -116,7 +112,6 @@ export default function TaskDetails() {
                 ]
             }
         };
-        console.log("updatedTask", updatedTask)
 
         try {
             await taskApi.updateTask(task.id, updatedTask);
@@ -125,7 +120,6 @@ export default function TaskDetails() {
             fetchTask();
             toast.success("Message added successfully");
         } catch (error) {
-            console.error("Error adding message:", error);
             toast.error("Failed to add message");
         }
     };
@@ -153,7 +147,6 @@ export default function TaskDetails() {
             fetchTask();
             toast.success("Task marked as complete");
         } catch (error) {
-            console.error("Error updating task status:", error);
             toast.error("Failed to update task status");
         }
     };
