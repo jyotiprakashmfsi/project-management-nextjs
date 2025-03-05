@@ -35,9 +35,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const updateUser = (newUser: User) => {
-    console.log("Updating user in context:", newUser);
     Cookies.set("user", JSON.stringify(newUser), { expires: 7 });
-    console.log("User cookie set:", Cookies.get("user"));
     setUser(newUser);
   };
 
