@@ -129,13 +129,13 @@ demo-nextjs/
 
 For detailed documentation, see the following guides:
 
-- [API Documentation](./docs/API.md)
-- [Authentication Guide](./docs/Authentication.md)
-- [Components Guide](./docs/Components.md)
-- [Database Schema](./docs/Database.md)
-- [Error Handling](./docs/ErrorHandling.md)
-- [Project Setup](./docs/ProjectSetup.md)
-- [Deployment Guide](./docs/Deployment.md)
+- [API Documentation](./API.md)
+- [Authentication Guide](./Authentication.md)
+- [Components Guide](./Components.md)
+- [Database Schema](./Database.md)
+- [Error Handling](./ErrorHandling.md)
+- [Project Setup](./ProjectSetup.md)
+- [Deployment Guide](./Deployment.md)
 
 ## Docker Deployment
 
