@@ -4,6 +4,7 @@ import { useUser } from "../../context/UserContext";
 import { usersService } from "@/services/client-services/user/api";
 import { useRouter } from "next/compat/router";
 import { UserUpdateData } from "@/types/user";
+import toast from "react-hot-toast";
 
 
 export default function SettingsComponent() {
@@ -63,7 +64,7 @@ export default function SettingsComponent() {
         throw new Error(response.error);
       }
     } catch (error) {
-      toast.error("Error updating user:", error)
+      toast.error("Error updating user")
     } finally {
       setSaving(false);
     }
@@ -79,7 +80,7 @@ export default function SettingsComponent() {
       logout();
       navigate?.push("/");
     } catch (error) {
-      toast.error("Error deleting account:", error);
+      toast.error("Error deleting account");
     }
   };
   return (

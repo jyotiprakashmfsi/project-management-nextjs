@@ -8,6 +8,7 @@ import { FiClock, FiCheckCircle, FiAlertCircle, FiActivity, FiUsers } from "reac
 import { useRouter } from "next/navigation";
 import { projectUserApi } from "@/services/client-services/project-users/api";
 import { useUser } from "@/context/UserContext";
+import toast from "react-hot-toast";
 
 export default function DashboardComponent() {
   const [projects, setProjects] = useState<Project[]>([]);
