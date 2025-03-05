@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AuthService } from "../../../../services/api-services/authService";
 import { initializeDatabase } from "../../../../db/models";
+import { ERRORS, HTTP_STATUS } from "../../../../utils/error-constants";
 
 const authService = new AuthService();
 
@@ -14,12 +15,12 @@ export const POST = async (req: NextRequest) => {
         await authService.createUser(body);
         console.log('User created successfully in API route');
         
-        return NextResponse.json({ success: true, message: 'User created successfully' }, { status: 201 });
+        return NextResponse.json({ success: true, message: 'User created successfully' }, { status: HTTP_STATUS.CREATED });
     } catch (error) {
         console.error('Error in signup API route:', error);
         return NextResponse.json({ 
             success: false, 
-            message: error instanceof Error ? error.message : 'An unknown error occurred' 
-        }, { status: 500 });
+            message: ERRORS.GENERAL.UNKNOWN 
+        }, { status: HTTP_STATUS.INTERNAL_SERVER_ERROR });
     }
 }
