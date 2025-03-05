@@ -13,7 +13,6 @@ export default function ProjectPage() {
               <span>/</span>
               <span className="text-black">Dashboard</span>
             </div>
-            {/* <NotificationComponent /> */}
           </div>
           <DashboardComponent />
         </div>

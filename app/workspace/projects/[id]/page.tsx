@@ -1,8 +1,6 @@
 import ProjectComponent from "@/components/project/project-component";
 import Sidebar from "@/components/ui/sidebar";
 
-
-
 export default function ProjectPage() {
   return (
     <div className="flex min-h-screen w-full bg-neutral-50">
@@ -15,7 +13,6 @@ export default function ProjectPage() {
               <span>/</span>
               <span className="text-black">Project</span>
             </div>
-            {/* <NotificationComponent /> */}
           </div>
           <ProjectComponent/>
         </div>

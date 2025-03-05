@@ -35,7 +35,7 @@ export default function DashboardComponent() {
 
         // Fetch recent tasks
         const tasksData = await taskApi.getUserTasks(user?.id || 0);
-        setRecentTasks(tasksData.data || []);
+        setRecentTasks(tasksData.tasks || []);
 
         // Calculate task statistics
         if (tasksData.data) {
@@ -256,19 +256,13 @@ export default function DashboardComponent() {
               <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
               <div className="space-y-2">
                 <button 
-                  onClick={() => router.push('/projects/new')}
+                  onClick={() => router.push('/workspace/projects/new')}
                   className="w-full text-left px-4 py-2 bg-indigo-50 text-indigo-700 rounded-md hover:bg-indigo-100 flex items-center"
                 >
                   <span className="mr-2">+</span> Create New Project
                 </button>
                 <button 
-                  onClick={() => router.push('/tasks/new')}
-                  className="w-full text-left px-4 py-2 bg-indigo-50 text-indigo-700 rounded-md hover:bg-indigo-100 flex items-center"
-                >
-                  <span className="mr-2">+</span> Add New Task
-                </button>
-                <button 
-                  onClick={() => router.push('/team')}
+                  onClick={() => router.push('/workspace/teams')}
                   className="w-full text-left px-4 py-2 bg-indigo-50 text-indigo-700 rounded-md hover:bg-indigo-100 flex items-center"
                 >
                   <FiUsers className="mr-2" /> Manage Team

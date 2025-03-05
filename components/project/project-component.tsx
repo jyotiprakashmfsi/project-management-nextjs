@@ -47,13 +47,11 @@ export default function ProjectComponent() {
             
             const projectData = await projectApi.getProjectById(parseInt(projectId));
             setProject(projectData);
-            console.log("projectData", projectData)
 
             const tasks = await taskApi.getProjectTasks(parseInt(projectId));
             const completedTasks = tasks.filter(task => task.status === 'finished').length;
             
             const teamMembers = await projectUserApi.getProjectUsers(parseInt(projectId));
-            console.log("teamMembers", teamMembers)
             
 
             setStats({
