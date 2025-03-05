@@ -24,7 +24,6 @@ export default function SettingsComponent() {
       try {
         const response = await usersService.getUserById(user.id, token);
         if (response.user) {
-          console.log("User fetched:", response)
           setFormData({
             fname: response.user[0].fname || "",
             email: response.user[0].email || "",
@@ -33,7 +32,7 @@ export default function SettingsComponent() {
           });
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        toast.error("Error fetching user data");
       }
     };
 
@@ -64,7 +63,7 @@ export default function SettingsComponent() {
         throw new Error(response.error);
       }
     } catch (error) {
-      console.error("Error updating user:", error);
+      toast.error("Error updating user:", error)
     } finally {
       setSaving(false);
     }
@@ -80,7 +79,7 @@ export default function SettingsComponent() {
       logout();
       navigate?.push("/");
     } catch (error) {
-      console.error("Error deleting account:", error);
+      toast.error("Error deleting account:", error);
     }
   };
   return (

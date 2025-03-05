@@ -29,7 +29,6 @@ export default function DashboardComponent() {
         setIsLoading(true);
         // Fetch projects
         const projectsData = await projectUserApi.getUserProjects(user?.id || 0);
-        console.log("projectsData", projectsData)
         setProjects(projectsData || []);
         setStats(prev => ({ ...prev, totalProjects: projectsData.total || 0 }));
 
@@ -51,7 +50,7 @@ export default function DashboardComponent() {
           }));
         }
       } catch (error) {
-        console.error("Error fetching dashboard data:", error);
+        toast.error("Error fetching dashboard data");
       } finally {
         setIsLoading(false);
       }
