@@ -3,15 +3,17 @@ import TaskDetails from "@/components/tasks/task-details";
 
 export default function TasksPage() {
   return (
-    <div className="flex min-h-screen w-full bg-gray-50">
+    <div className="flex min-h-screen w-full bg-neutral-50">
       <Sidebar />
       <div className="flex-1 w-full">
         <div className="p-8">
           <div className="flex justify-between">
-            <div className="text-black/70 flex gap-2 items-center mb-6">
+            <div className="text-neutral-500 flex gap-2 items-center mb-6">
               <span className="hover:text-black">Tasks Scheduler</span>
               <span>/</span>
-              <span className="text-black">Tasks</span>
+              <span className="hover:text-black">Project</span>
+              <span>/</span>
+              <span className="text-black">Task</span>
             </div>
           </div>
           <TaskDetails />

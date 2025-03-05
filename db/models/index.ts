@@ -2,10 +2,12 @@ import dotenv from "dotenv";
 import { Sequelize, DataTypes } from "sequelize";
 import config from "../config/config";
 import mysql2 from 'mysql2'; 
+// const { Sequelize, DataTypes } = require('sequelize');
+// const {mysql2} = require('mysql2')
+
 
 dotenv.config();
 
-// Check if we're running in a test environment
 const isTestEnv = process.env.NODE_ENV === 'test';
 
 const dbHost = process.env.DB_HOST || config.development.host;
@@ -19,14 +21,14 @@ if (!isTestEnv) {
 }
 
 const sequelize = new Sequelize(
-  dbName,
-  dbUser,
-  dbPassword,
+  dbName as string,
+  dbUser as string,
+  dbPassword as string,
   {
     host: dbHost,
     port: parseInt(dbPort as string, 10) || 3306,
     dialect: 'mysql',
-    dialectModule: mysql2,
+    dialectModule: require("mysql2"),
     benchmark: true,
     dialectOptions: {
       host: dbHost,
@@ -38,14 +40,14 @@ const sequelize = new Sequelize(
   }
 );
 
-export const User = sequelize.define(
+const User = sequelize.define(
   'users',
   {
     id:{
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-    },
+    },  
     fname: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -68,59 +70,16 @@ export const User = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
+      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
+      default: DataTypes.NOW
     }
   },
-  {
-    tableName: 'users',
-    timestamps: true
-  }
-);
+)
 
-export const Projects = sequelize.define(
-  'projects',
-  {
-    id:{
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    status: {
-      type: DataTypes.STRING,
-      defaultValue: 'active',
-    },
-    created_by: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id'
-      }
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-    }
-  },
-  {
-    tableName: 'projects',
-    timestamps: true
-  }
-);
-
-export const ProjectUsers = sequelize.define(
+const ProjectUsers = sequelize.define(
   'project_users',
   {
     id:{
@@ -150,26 +109,24 @@ export const ProjectUsers = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
+      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
+      default: DataTypes.NOW
     }
   },
-  {
-    tableName: 'project_users',
-    timestamps: true
-  }
-);
+)
 
-export const Tasks = sequelize.define(
-  'tasks',
+const Projects = sequelize.define(
+  'projects',
   {
     id:{
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -179,35 +136,7 @@ export const Tasks = sequelize.define(
     },
     status: {
       type: DataTypes.STRING,
-      defaultValue: 'todo',
-    },
-    priority: {
-      type: DataTypes.STRING,
-      defaultValue: 'medium',
-    },
-    due_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    project_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'projects',
-        key: 'id'
-      }
-    },
-    assigned_to: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'users',
-        key: 'id'
-      }
-    },
-    task_json: {
-      type: DataTypes.JSON,
-      allowNull: true,
+      defaultValue: 'active',
     },
     created_by: {
       type: DataTypes.INTEGER,
@@ -219,16 +148,76 @@ export const Tasks = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
+      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
+      default: DataTypes.NOW
     }
   },
+)
+
+const Tasks = sequelize.define(
+  'tasks',
   {
-    tableName: 'tasks',
-    timestamps: true
-  }
-);
+    id:{
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    project_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'projects',
+        key: 'id'
+      }
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'pending',
+    },
+    end_time: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    assigned_to: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id'
+      }
+    },
+    task_json: {
+      type: DataTypes.JSON,
+      allowNull: true,  
+    },
+    priority: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'low',
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      default: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      default: DataTypes.NOW
+    }
+  },
+)
+
 
 export async function initializeDatabase() {
   // Skip database initialization in test environment
@@ -240,25 +229,25 @@ export async function initializeDatabase() {
   try {
     console.log('Starting database initialization...');
     
-    // First, try to connect to MySQL server and create the database if it doesn't exist
-    const tempSequelize = new Sequelize('mysql', dbUser, dbPassword, {
-      host: dbHost,
-      port: parseInt(dbPort as string, 10) || 3306,
-      dialect: 'mysql',
-      dialectModule: mysql2,
-      logging: console.log,
-      retry: {
-        max: 5, // Maximum retry 5 times
-        timeout: 30000 // 30 seconds timeout between retries
-      }
-    });
+    // // First, try to connect to MySQL server and create the database if it doesn't exist
+    // const tempSequelize = new Sequelize('mysql', dbUser, dbPassword, {
+    //   host: dbHost,
+    //   port: parseInt(dbPort as string, 10) || 3306,
+    //   dialect: 'mysql',
+    //   dialectModule: mysql,
+    //   logging: console.log,
+    //   retry: {
+    //     max: 5, // Maximum retry 5 times
+    //     timeout: 30000 // 30 seconds timeout between retries
+    //   }
+    // });
 
-    try {
-      await tempSequelize.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
-      console.log(`Database ${dbName} created or already exists`);
-    } finally {
-      await tempSequelize.close();
-    }
+    // try {
+    //   await tempSequelize.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
+    //   console.log(`Database ${dbName} created or already exists`);
+    // } finally {
+    //   await tempSequelize.close();
+    // }
 
     // Now connect to our database and sync models
     try {

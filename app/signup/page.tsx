@@ -63,18 +63,76 @@ function Signup() {
         return Object.keys(errors).length === 0;
     };
 
+    const validateField = (name: string, value: string): boolean => {
+        const errors = { ...validationErrors };
+        
+        switch (name) {
+            case 'fname':
+                if (value.length < 2) {
+                    errors.fname = 'First name must be at least 2 characters';
+                } else {
+                    delete errors.fname;
+                }
+                break;
+                
+            case 'lname':
+                if (value.length < 2) {
+                    errors.lname = 'Last name must be at least 2 characters';
+                } else {
+                    delete errors.lname;
+                }
+                break;
+                
+            case 'email':
+                if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    errors.email = 'Please enter a valid email address';
+                } else {
+                    delete errors.email;
+                }
+                break;
+                
+            case 'password':
+                if (value.length < 8) {
+                    errors.password = 'Password must be at least 8 characters';
+                } else if (!value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)) {
+                    errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+                } else {
+                    delete errors.password;
+                }
+                
+                if (formData.confirmPassword) {
+                    if (value !== formData.confirmPassword) {
+                        errors.confirmPassword = 'Passwords do not match';
+                    } else {
+                        delete errors.confirmPassword;
+                    }
+                }
+                break;
+                
+            case 'confirmPassword':
+                if (value !== formData.password) {
+                    errors.confirmPassword = 'Passwords do not match';
+                } else {
+                    delete errors.confirmPassword;
+                }
+                break;
+        }
+        
+        setValidationErrors(errors);
+        return !errors[name as keyof ValidationErrors];
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value
         }));
-        if (validationErrors[name as keyof ValidationErrors]) {
-            setValidationErrors(prev => ({
-                ...prev,
-                [name]: undefined
-            }));
-        }
+    };
+    
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        validateField(name, value);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -86,7 +144,6 @@ function Signup() {
         try {
             console.log('Starting signup process...');
             
-            // First create the user account
             const signupData = {
                 fname: formData.fname + " " + formData.lname,
                 email: formData.email,
@@ -97,7 +154,6 @@ function Signup() {
             const signupResponse = await authService.signup(signupData);
             console.log("Signup response:", signupResponse);
             
-            // Now attempt to log in with the new credentials
             console.log('Attempting to login with new credentials...');
             const loginResponse = await authService.login({
                 email: formData.email,
@@ -173,6 +229,7 @@ function Signup() {
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.fname}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                                 {validationErrors.fname && (
                                     <p className="mt-1 text-sm text-red-600">{validationErrors.fname}</p>
@@ -193,6 +250,7 @@ function Signup() {
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.lname}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                                 {validationErrors.lname && (
                                     <p className="mt-1 text-sm text-red-600">{validationErrors.lname}</p>
@@ -215,6 +273,7 @@ function Signup() {
                                 } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                 value={formData.email}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
                             {validationErrors.email && (
                                 <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
@@ -237,6 +296,7 @@ function Signup() {
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.password}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                                 <button
                                     type="button"
@@ -271,6 +331,7 @@ function Signup() {
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                             </div>
                             {validationErrors.confirmPassword && (

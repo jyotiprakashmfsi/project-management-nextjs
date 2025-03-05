@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { AuthRepository } from '../../repository/authRepository';
 import { UserData, SafeUser } from '../../types/user';
-const bcrypt = require("bcrypt");
+import bcrypt from 'bcryptjs';
 
 dotenv.config();
 const secretKey = process.env.JWT_SECRET_TOKEN || '';
@@ -27,15 +27,15 @@ export class AuthService {
                 throw new Error('Missing required user data fields');
             }
             
-            console.log('AuthService: Hashing password...');
+            console.log('AuthService: Hashing password.....');
             let hashedPassword;
-            try {
+            // try {
                 hashedPassword = await hashPassword(userData.password);
                 console.log('AuthService: Password hashed successfully');
-            } catch (hashError) {
-                console.error('AuthService: Error hashing password:', hashError);
-                throw new Error(`Password hashing failed: ${hashError instanceof Error ? hashError.message : 'Unknown error'}`);
-            }
+            // } catch (hashError) {
+            //     console.error('AuthService: Error hashing password:', hashError);
+            //     throw new Error(`Password hashing failed: ${hashError instanceof Error ? hashError.message : 'Unknown error'}`);
+            // }
             
             console.log('AuthService: Calling repository to create user...');
             try {

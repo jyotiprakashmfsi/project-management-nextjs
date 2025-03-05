@@ -36,7 +36,7 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
             setFormData({
                 title: task.title,
                 description: task.description || '',
-                status: task.status,
+                status: 'not-started',
                 end_time: new Date(task.end_time).toISOString().split('T')[0],
                 project_id: task.project_id,
                 assigned_to: task.assigned_to,
@@ -92,7 +92,7 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed text-black inset-0 z-50 overflow-y-auto bg-black/50 bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed text-black inset-0 z-50 overflow-y-auto bg-gray-900/50 bg-opacity-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md relative">
                 <div className="p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">
@@ -145,7 +145,7 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                             </select>
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label htmlFor="status" className="block text-sm font-medium text-gray-700">
                                 Status
                             </label>
@@ -159,7 +159,7 @@ export default function TaskModal({ isOpen, onClose, task, projectId, onSuccess 
                                 <option value="started">In Progress</option>
                                 <option value="finished">Completed</option>
                             </select>
-                        </div>
+                        </div> */}
 
                         <div>
                             <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
