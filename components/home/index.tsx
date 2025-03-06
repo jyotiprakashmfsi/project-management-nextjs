@@ -9,8 +9,9 @@ import { motion } from "framer-motion";
 
 export default function HomeComponent() {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, logout } = useUser();
   const [mounted, setMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -20,6 +21,15 @@ export default function HomeComponent() {
     router.push("/workspace");
   };
 
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-indigo-50 overflow-hidden">
       <nav className="fixed w-full bg-white/80 backdrop-blur-sm shadow-sm z-50">
@@ -27,7 +37,30 @@ export default function HomeComponent() {
           <div className="text-2xl font-bold text-indigo-600">
             Project Management
           </div>
-          <div className="flex gap-4 text-black items-center">
+          
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden text-gray-600 focus:outline-none"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <svg 
+              className="w-6 h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+          
+          {/* Desktop menu */}
+          <div className="hidden md:flex gap-4 text-black items-center">
             <p className="font-medium">
               {mounted && user ? "Hello " + user.fname : ""}
             </p>
@@ -36,8 +69,42 @@ export default function HomeComponent() {
               className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
             >
               {mounted ? (user ? "Dashboard" : "Login") : "Loading..."}
-            </button> 
+            </button>
+            {mounted && user && (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
+              >
+                Logout
+              </button>
+            )}
             <ThemeToggle />
+          </div>
+        </div>
+        
+        {/* Mobile menu */}
+        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white/95 shadow-md`}>
+          <div className="container mx-auto px-6 py-4 space-y-4">
+            <p className="font-medium">
+              {mounted && user ? "Hello " + user.fname : ""}
+            </p>
+            <button
+              onClick={handleGetStarted}
+              className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              {mounted ? (user ? "Dashboard" : "Login") : "Loading..."}
+            </button>
+            {mounted && user && (
+              <button
+                onClick={handleLogout}
+                className="w-full px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
+              >
+                Logout
+              </button>
+            )}
+            <div className="flex justify-center">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </nav>
@@ -62,7 +129,7 @@ export default function HomeComponent() {
                 Connect every team, task, and project together and{" "}
                 <span className="text-indigo-600 relative">
                   Stay on Track
-                  <span className="absolute bottom-1 left-0 w-full h-2 bg-indigo-200 -z-10 transform -rotate-1"></span>
+                  <span className="absolute bottom-1 left-0 w-full h-2 bg-indigo-300 -z-10 transform -rotate-1"></span>
                 </span>
               </h1>
               <p className="text-xl text-gray-700">

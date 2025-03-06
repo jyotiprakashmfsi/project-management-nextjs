@@ -1,14 +1,57 @@
+import { Metadata, ResolvingMetadata } from "next";
+import { TaskService } from "@/services/api-services/taskService";
+import { ProjectService } from "@/services/api-services/projectService";
 import Sidebar from "@/components/ui/sidebar";
 import TaskDetails from "@/components/tasks/task-details";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Task",
-  description: "Overview of a task.",
+// Define types for the params and props
+type Props = {
+  params: { id: string; taskId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
+// Generate metadata dynamically based on task data
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const projectId = parseInt(params.id);
+  const taskId = parseInt(params.taskId);
+  
+  // Fetch task and project data
+  const taskService = new TaskService();
+  const projectService = new ProjectService();
+  
+  const [task, project] = await Promise.all([
+    taskService.getTaskById(taskId),
+    projectService.getProjectById(projectId)
+  ]);
+  
+  const projectName = project ? project.name : "Project";
+  const taskName = task ? task.title : "Task";
+  const taskDescription = task ? task.description : "Task details";
+  const taskStatus = task ? task.status : "unknown";
+  
+  return {
+    title: `${taskName} | ${projectName}`,
+    description: taskDescription,
+    openGraph: {
+      title: `${taskName} | ${projectName}`,
+      description: taskDescription,
+      type: "website",
+    },
+    other: {
+      "task-status": taskStatus,
+      "project-id": projectId.toString(),
+      "task-id": taskId.toString(),
+    }
+  };
+}
 
-export default function TasksPage() {
+// Server component to fetch task data
+async function TasksPage({ params }: Props) {
+
+  
   return (
     <div className="flex min-h-screen w-full bg-neutral-50">
       <Sidebar />
@@ -29,3 +72,5 @@ export default function TasksPage() {
     </div>
   );
 }
+
+export default TasksPage;

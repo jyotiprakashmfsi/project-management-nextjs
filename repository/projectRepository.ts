@@ -50,7 +50,7 @@ export class ProjectRepository {
         };
     }
 
-    async getProjectById(id: number): Promise<Project | null> {
+    async getProjectById(id: number): Promise<any | null> {
         const [projects] = await sequelize.query(
             `SELECT * FROM projects WHERE id = ?`,
             {
