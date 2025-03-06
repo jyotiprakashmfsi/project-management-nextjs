@@ -34,8 +34,8 @@ export default function RootLayout({
         <ErrorHandler>
           <ThemeProvider>
             <UserProvider>
+                {children}
               <Toaster position="top-right" />
-              {children}
             </UserProvider>
           </ThemeProvider>
         </ErrorHandler>

@@ -17,7 +17,7 @@ export class ProjectService {
         return this.projectRepository.getAllProjects(pagination);
     }
 
-    async getProjectById(id: number): Promise<Project | null> {
+    async getProjectById(id: number): Promise<any | null> {
         return this.projectRepository.getProjectById(id);
     }
 
