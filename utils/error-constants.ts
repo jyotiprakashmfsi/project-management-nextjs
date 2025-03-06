@@ -61,6 +61,7 @@ export const AUTH_ERRORS = {
   INVALID_VERIFICATION_TOKEN: 'Invalid or expired verification token',
   MFA_REQUIRED: 'Multi-factor authentication required',
   MFA_INVALID: 'Invalid multi-factor authentication code',
+  CREATION_FAILED: 'Account creation failed',
 };
 
 // Validation Error Messages
@@ -78,6 +79,7 @@ export const VALIDATION_ERRORS = {
   MIN_VALUE: (field: string, value: number) => `${field} must be at least ${value}`,
   MAX_VALUE: (field: string, value: number) => `${field} cannot exceed ${value}`,
   INVALID_OPTION: (field: string) => `Selected ${field} is not a valid option`,
+  MISSING_FIELDS: `Selected is missing`,
 };
 
 // User-related Error Messages

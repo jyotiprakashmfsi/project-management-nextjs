@@ -1,5 +1,6 @@
 import { ProjectUserCreateData } from '@/types/projectuser';
 import { getHeaders } from '@/utils/header';
+import { API_ERRORS, PROJECT_ERRORS, USER_ERRORS } from '@/utils/error-constants';
 
 
 export const projectUserApi = {
@@ -11,7 +12,7 @@ export const projectUserApi = {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to add user to project');
+            throw new Error(USER_ERRORS.INSUFFICIENT_PERMISSIONS);
         }
         return response.json();
     },
@@ -24,7 +25,7 @@ export const projectUserApi = {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to update user role');
+            throw new Error(USER_ERRORS.UPDATE_FAILED);
         }
         return response.json();
     },
@@ -36,7 +37,7 @@ export const projectUserApi = {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to remove user from project');
+            throw new Error(USER_ERRORS.DELETE_FAILED);
         }
         return response.json();
     },
@@ -46,6 +47,9 @@ export const projectUserApi = {
             method: 'GET',
             headers: getHeaders()
         });
+        if (!response.ok) {
+            throw new Error(PROJECT_ERRORS.NOT_FOUND);
+        }
         return response.json();
     },
 
@@ -55,6 +59,9 @@ export const projectUserApi = {
             method: 'GET',
             headers: getHeaders()
         });
+        if (!response.ok) {
+            throw new Error(API_ERRORS.REQUEST_FAILED);
+        }
         return response.json();
     },
 
@@ -64,6 +71,9 @@ export const projectUserApi = {
             headers: getHeaders(),
             body: JSON.stringify({ role })
         });
+        if (!response.ok) {
+            throw new Error(USER_ERRORS.UPDATE_FAILED);
+        }
         return response.json();
     },
 
@@ -72,6 +82,9 @@ export const projectUserApi = {
             method: 'GET',
             headers: getHeaders()
         });
+        if (!response.ok) {
+            throw new Error(PROJECT_ERRORS.NOT_FOUND);
+        }
         return response.json();
     },
 
@@ -80,6 +93,9 @@ export const projectUserApi = {
             method: 'GET',
             headers: getHeaders()
         });
+        if (!response.ok) {
+            throw new Error(API_ERRORS.REQUEST_FAILED);
+        }
         return response.json();
     }
 };
