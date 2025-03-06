@@ -1,5 +1,6 @@
 import { UserData } from "../types/user";
 import { sequelize } from '../db/models/index';
+import { AUTH_ERRORS } from '../utils/error-constants';
 
 export class AuthRepository {
     async createUser(userData: UserData, hashedPassword: string): Promise<void> {
@@ -15,7 +16,7 @@ export class AuthRepository {
             console.log('AuthRepository: User created successfully');
         } catch (error) {
             console.error('AuthRepository: Error creating user:', error);
-            throw new Error(`Failed to create user: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(`Failed to create user: ${error instanceof Error ? error.message : AUTH_ERRORS.CREATION_FAILED}`);
         }
     }
 
@@ -30,7 +31,7 @@ export class AuthRepository {
             return user;
         } catch (error) {
             console.error('AuthRepository: Error finding user by email:', error);
-            throw new Error(`Failed to find user: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(`Failed to find user: ${error instanceof Error ? error.message : AUTH_ERRORS.NOT_FOUND}`);
         }
     }
 }

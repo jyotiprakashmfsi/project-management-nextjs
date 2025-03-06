@@ -1,5 +1,12 @@
 import Sidebar from "@/components/ui/sidebar";
 import TaskDetails from "@/components/tasks/task-details";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Task",
+  description: "Overview of a task.",
+};
+
 
 export default function TasksPage() {
   return (

@@ -1,4 +1,9 @@
-"use client";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Teams",
+  description: "Teams",
+};
 
 export default function TeamsLayout({
   children,
