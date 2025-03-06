@@ -189,7 +189,7 @@ function SignupComponent() {
       </div>
             <div className="max-w-md w-full space-y-8">
                 <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
+                    <h2 id="signup-form-title" className="mt-6 text-center text-3xl font-extrabold text-black">
                         Create your account
                     </h2>
                     <p className="mt-2 text-center text-sm text-black">
@@ -197,7 +197,7 @@ function SignupComponent() {
                     </p>
                 </div>
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit} aria-labelledby="signup-form-title">
 
                     <div className="rounded-md space-y-4">
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -209,16 +209,18 @@ function SignupComponent() {
                                     id="fname"
                                     name="fname"
                                     type="text"
-                                    required
                                     className={`mt-1 appearance-none rounded relative block w-full px-3 py-2 border ${
                                         validationErrors.fname ? 'border-red-300' : 'border-gray-300'
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.fname}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    aria-required="true"
+                                    aria-invalid={!!validationErrors.fname}
+                                    aria-describedby={validationErrors.fname ? "fname-error" : undefined}
                                 />
                                 {validationErrors.fname && (
-                                    <p className="mt-1 text-sm text-red-600">{validationErrors.fname}</p>
+                                    <p className="mt-1 text-sm text-red-600" id="fname-error" role="alert">{validationErrors.fname}</p>
                                 )}
                             </div>
 
@@ -230,16 +232,18 @@ function SignupComponent() {
                                     id="lname"
                                     name="lname"
                                     type="text"
-                                    required
                                     className={`mt-1 appearance-none rounded relative block w-full px-3 py-2 border ${
                                         validationErrors.lname ? 'border-red-300' : 'border-gray-300'
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.lname}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    aria-required="true"
+                                    aria-invalid={!!validationErrors.lname}
+                                    aria-describedby={validationErrors.lname ? "lname-error" : undefined}
                                 />
                                 {validationErrors.lname && (
-                                    <p className="mt-1 text-sm text-red-600">{validationErrors.lname}</p>
+                                    <p className="mt-1 text-sm text-red-600" id="lname-error" role="alert">{validationErrors.lname}</p>
                                 )}
                             </div>
                         </div>
@@ -253,16 +257,18 @@ function SignupComponent() {
                                 name="email"
                                 type="email"
                                 autoComplete="email"
-                                required
                                 className={`mt-1 appearance-none rounded relative block w-full px-3 py-2 border ${
                                     validationErrors.email ? 'border-red-300' : 'border-gray-300'
                                 } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                 value={formData.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                aria-required="true"
+                                aria-invalid={!!validationErrors.email}
+                                aria-describedby={validationErrors.email ? "email-error" : undefined}
                             />
                             {validationErrors.email && (
-                                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                                <p className="mt-1 text-sm text-red-600" id="email-error" role="alert">{validationErrors.email}</p>
                             )}
                         </div>
 
@@ -276,28 +282,31 @@ function SignupComponent() {
                                     name="password"
                                     type={showPassword ? "text" : "password"}
                                     autoComplete="new-password"
-                                    required
                                     className={`appearance-none rounded relative block w-full px-3 py-2 border ${
                                         validationErrors.password ? 'border-red-300' : 'border-gray-300'
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.password}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    aria-required="true"
+                                    aria-invalid={!!validationErrors.password}
+                                    aria-describedby={validationErrors.password ? "password-error" : undefined}
                                 />
                                 <button
                                     type="button"
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                                     onClick={() => setShowPassword(!showPassword)}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
                                     {showPassword ? (
-                                        <FiEyeOff className="h-5 w-5 text-gray-400" />
+                                        <FiEyeOff className="h-5 w-5 text-gray-400" aria-hidden="true" />
                                     ) : (
-                                        <FiEye className="h-5 w-5 text-gray-400" />
+                                        <FiEye className="h-5 w-5 text-gray-400" aria-hidden="true" />
                                     )}
                                 </button>
                             </div>
                             {validationErrors.password && (
-                                <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+                                <p className="mt-1 text-sm text-red-600" id="password-error" role="alert">{validationErrors.password}</p>
                             )}
                         </div>
 
@@ -311,24 +320,26 @@ function SignupComponent() {
                                     name="confirmPassword"
                                     type={showPassword ? "text" : "password"}
                                     autoComplete="new-password"
-                                    required
                                     className={`appearance-none rounded relative block w-full px-3 py-2 border ${
                                         validationErrors.confirmPassword ? 'border-red-300' : 'border-gray-300'
                                     } placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    aria-required="true"
+                                    aria-invalid={!!validationErrors.confirmPassword}
+                                    aria-describedby={validationErrors.confirmPassword ? "confirm-password-error" : undefined}
                                 />
                             </div>
                             {validationErrors.confirmPassword && (
-                                <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
+                                <p className="mt-1 text-sm text-red-600" id="confirm-password-error" role="alert">{validationErrors.confirmPassword}</p>
                             )}
                         </div>
                     </div>
 
                     <div className="flex items-center justify-between">
                         <div className="text-sm">
-                            <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                            <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500" aria-label="Sign in to existing account">
                                 Already have an account? Sign in
                             </a>
                         </div>
@@ -341,6 +352,8 @@ function SignupComponent() {
                             className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
                                 loading ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
                             } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                            aria-busy={loading}
+                            aria-disabled={loading}
                         >
                             {loading ? 'Creating Account...' : 'Sign up'}
                         </button>

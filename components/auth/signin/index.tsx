@@ -109,14 +109,14 @@ function LoginComponent() {
       </div>
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
+          <h2 id="signin-form-title" className="mt-6 text-center text-3xl font-extrabold text-black">
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-black">
             Welcome back to your project management dashboard
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit} aria-labelledby="signin-form-title">
           <div className="rounded-md space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -126,14 +126,16 @@ function LoginComponent() {
                 id="email"
                 name="email"
                 type="email"
-                required
                 className="mt-1 appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                aria-required="true"
+                aria-invalid={!!validationErrors.email}
+                aria-describedby={validationErrors.email ? "email-error" : undefined}
               />
               {validationErrors.email && (
-                <p className="mt-2 text-sm text-red-600">{validationErrors.email}</p>
+                <p className="mt-2 text-sm text-red-600" id="email-error" role="alert">{validationErrors.email}</p>
               )}
             </div>
             <div>
@@ -145,33 +147,36 @@ function LoginComponent() {
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  required
                   className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   value={formData.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  aria-required="true"
+                  aria-invalid={!!validationErrors.password}
+                  aria-describedby={validationErrors.password ? "password-error" : undefined}
                 />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <FiEyeOff className="h-5 w-5 text-gray-400" />
+                    <FiEyeOff className="h-5 w-5 text-gray-400" aria-hidden="true" />
                   ) : (
-                    <FiEye className="h-5 w-5 text-gray-400" />
+                    <FiEye className="h-5 w-5 text-gray-400" aria-hidden="true" />
                   )}
                 </button>
               </div>
               {validationErrors.password && (
-                <p className="mt-2 text-sm text-red-600">{validationErrors.password}</p>
+                <p className="mt-2 text-sm text-red-600" id="password-error" role="alert">{validationErrors.password}</p>
               )}
             </div>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500" aria-label="Sign up for a new account">
                 Don't have an account? Sign up
               </a>
             </div>
@@ -184,6 +189,8 @@ function LoginComponent() {
               className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
                 loading ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
               } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+              aria-busy={loading}
+              aria-disabled={loading}
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
