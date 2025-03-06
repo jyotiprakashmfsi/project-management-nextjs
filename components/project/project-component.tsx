@@ -2,11 +2,14 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { RiTeamLine, RiTaskLine } from 'react-icons/ri';
-import ProjectTasks from "./project-tasks";
 import { projectApi } from '@/services/client-services/project/api';
 import { taskApi } from '@/services/client-services/tasks/api';
 import { projectUserApi } from '@/services/client-services/project-users/api';
 import { useParams } from 'next/navigation';
+import dynamic from 'next/dynamic'
+
+const ProjectTasks = dynamic(() => import('./project-tasks'), { ssr: false });
+
 
 interface ProjectDetails {
     id: number;
