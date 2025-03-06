@@ -1,15 +1,17 @@
 'use client';
 import { useEffect, useState, useRef } from "react";
 import { Task } from "../../types/task";
-import TaskModal from "../tasks/task-modal";
-import TaskSlider from "../tasks/task-slider";
 import toast from "react-hot-toast";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { projectUserApi } from "@/services/client-services/project-users/api";
 import { taskApi } from "@/services/client-services/tasks/api";
 import { useRouter } from "next/navigation";
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import dynamic from 'next/dynamic'
+
+const BsThreeDotsVertical = dynamic(() => import('react-icons/bs').then(module => module.BsThreeDotsVertical), { ssr: false });
+const TaskSlider = dynamic(() => import('../tasks/task-slider'), { ssr: false });
+const TaskModal = dynamic(() => import('../tasks/task-modal'), { ssr: false });
 
 interface ProjectTasksProps {
     projectId: number;
