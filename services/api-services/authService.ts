@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { AuthRepository } from '../../repository/authRepository';
 import { UserData, SafeUser } from '../../types/user';
 import bcrypt from 'bcryptjs';
+import { AUTH_ERRORS, VALIDATION_ERRORS, USER_ERRORS } from '../../utils/error-constants';
 
 dotenv.config();
 const secretKey = process.env.JWT_SECRET_TOKEN || '';
@@ -23,38 +24,27 @@ export class AuthService {
         try {
             // Validate user data
             if (!userData.email || !userData.password || !userData.fname) {
-                console.error('AuthService: Missing required user data fields');
-                throw new Error('Missing required user data fields');
+                throw new Error(VALIDATION_ERRORS.MISSING_FIELDS);
             }
             
-            console.log('AuthService: Hashing password.....');
             let hashedPassword;
-            // try {
                 hashedPassword = await hashPassword(userData.password);
-                console.log('AuthService: Password hashed successfully');
-            // } catch (hashError) {
-            //     console.error('AuthService: Error hashing password:', hashError);
-            //     throw new Error(`Password hashing failed: ${hashError instanceof Error ? hashError.message : 'Unknown error'}`);
-            // }
+
             
             console.log('AuthService: Calling repository to create user...');
             try {
                 await this.authRepository.createUser(userData, hashedPassword);
-                console.log('AuthService: User created successfully in repository');
             } catch (repoError) {
-                console.error('AuthService: Error from repository when creating user:', repoError);
-                throw new Error(`Repository error: ${repoError instanceof Error ? repoError.message : 'Unknown error'}`);
+                throw new Error(`Repository error: ${repoError instanceof Error ? repoError.message : AUTH_ERRORS.CREATION_FAILED}`);
             }
         } catch (error) {
-            console.error('AuthService: Error creating user:', error);
             // Rethrow but don't crash
-            throw new Error(`User creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(`User creation failed: ${error instanceof Error ? error.message : USER_ERRORS.CREATION_FAILED}`);
         }
     }
 
     async authenticateUser(email: string, password: string): Promise<{ token: string, user: SafeUser }> {
         try {
-            console.log('AuthService: Authenticating user with email:', email);
             const result = await this.authRepository.findUserByEmail(email);
             
             // Handle different possible return structures
@@ -70,15 +60,12 @@ export class AuthService {
             }
 
             if (!user) {
-                console.error('AuthService: User not found');
-                throw new Error("User not found");
+                throw new Error(USER_ERRORS.NOT_FOUND);
             }
 
-            console.log('AuthService: Comparing password...');
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (!isPasswordValid) {
-                console.error('AuthService: Invalid password');
-                throw new Error("Invalid password");
+                throw new Error(AUTH_ERRORS.INVALID_CREDENTIALS);
             }
 
             const safeUser: SafeUser = {
@@ -87,18 +74,15 @@ export class AuthService {
                 fname: user.fname
             };
 
-            console.log('AuthService: Generating token...');
             const token = jwt.sign(
                 { userId: user.id, email: user.email },
                 secretKey,
                 { expiresIn: '24h' }
             );
 
-            console.log('AuthService: Authentication successful');
             return { token, user: safeUser };
         } catch (error) {
-            console.error('AuthService: Error authenticating user:', error);
-            throw new Error(`Authentication failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(`Authentication failed: ${error instanceof Error ? error.message : AUTH_ERRORS.INVALID_CREDENTIALS}`);
         }
     }
 }

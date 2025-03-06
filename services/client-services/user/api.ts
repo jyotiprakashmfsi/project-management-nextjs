@@ -1,5 +1,6 @@
 import { UserUpdateData } from "@/types/user";
 import { getHeaders } from "@/utils/header";
+import { USER_ERRORS, API_ERRORS } from "@/utils/error-constants";
 
 export class usersService {
   static async getUserById(id: number, jwt: string) {
@@ -17,7 +18,7 @@ export class usersService {
       return result;
     } catch (error) {
       console.log(error);
-      return error;
+      return { error: USER_ERRORS.NOT_FOUND };
     }
   }
 
@@ -37,7 +38,7 @@ export class usersService {
       return result;
     } catch (error) {
       console.log(error);
-      return error;
+      return { error: USER_ERRORS.UPDATE_FAILED };
     }
   }
 
@@ -56,7 +57,7 @@ export class usersService {
       return result;
     } catch (error) {
       console.log(error);
-      return error;
+      return { error: USER_ERRORS.DELETE_FAILED };
     }
   }
 
@@ -71,7 +72,7 @@ export class usersService {
       return result;
     } catch (error) {
       console.log(error);
-      return error;
+      return { error: API_ERRORS.REQUEST_FAILED };
     }
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Task, TaskCreateData } from '../../types/task';
 import toast from 'react-hot-toast';
@@ -24,6 +24,13 @@ export default function TasksComponent() {
     const [projects, setProjects] = useState<{ project_id: number; project_name: string; }[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [form, setForm] = useState(null);
+    
+    
+    const memoizedValue = useMemo(() => {
+        setForm(form)
+    }, [form]);
+
     const [formData, setFormData] = useState<TaskCreateData>({
         title: '',
         description: '',

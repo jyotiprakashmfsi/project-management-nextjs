@@ -1,5 +1,6 @@
 import { Task, TaskCreateData } from "@/types/task";
 import { getHeaders } from "@/utils/header";
+import { TASK_ERRORS, API_ERRORS } from "@/utils/error-constants";
 
 export const taskApi = {
     getAllTasks: async (page: number = 1, limit: number = 10): Promise<any> => {
@@ -8,7 +9,7 @@ export const taskApi = {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('Failed to fetch tasks');
+        if (!response.ok) throw new Error(API_ERRORS.REQUEST_FAILED);
         return response.json();
     },
 
@@ -18,7 +19,7 @@ export const taskApi = {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('Failed to fetch task');
+        if (!response.ok) throw new Error(TASK_ERRORS.NOT_FOUND);
         return response.json();
     },
 
@@ -28,7 +29,7 @@ export const taskApi = {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('Failed to fetch project tasks');
+        if (!response.ok) throw new Error(API_ERRORS.REQUEST_FAILED);
         return response.json();
     },
 
@@ -38,7 +39,7 @@ export const taskApi = {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('Failed to fetch user tasks');
+        if (!response.ok) throw new Error(API_ERRORS.REQUEST_FAILED);
         return response.json();
     },
 
@@ -48,7 +49,7 @@ export const taskApi = {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('Failed to fetch project tasks by status');
+        if (!response.ok) throw new Error(API_ERRORS.REQUEST_FAILED);
         return response.json();
     },
 
@@ -59,7 +60,7 @@ export const taskApi = {
             body: JSON.stringify(taskData)
         });
         
-        if (!response.ok) throw new Error('Failed to create task');
+        if (!response.ok) throw new Error(TASK_ERRORS.CREATION_FAILED);
         return response.json();
     },
 
@@ -70,7 +71,7 @@ export const taskApi = {
             body: JSON.stringify(taskData)
         });
         
-        if (!response.ok) throw new Error('Failed to update task');
+        if (!response.ok) throw new Error(TASK_ERRORS.UPDATE_FAILED);
         return response.json();
     },
 
@@ -80,6 +81,6 @@ export const taskApi = {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('Failed to delete task');
+        if (!response.ok) throw new Error(TASK_ERRORS.DELETE_FAILED);
     }
 };

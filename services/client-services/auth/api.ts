@@ -1,3 +1,5 @@
+import { AUTH_ERRORS, GENERAL_ERRORS } from '../../../utils/error-constants';
+
 interface User{
     id?: number,
     fname?: string,
@@ -29,7 +31,7 @@ export class authService {
         console.error(`Login failed with status: ${response.status}`);
         const errorData = await response.json();
         console.error('Error response:', errorData);
-        throw new Error(errorData.message || 'Login failed');
+        throw new Error(errorData.message || AUTH_ERRORS.INVALID_CREDENTIALS);
       }
 
       const result = await response.json();
@@ -59,7 +61,7 @@ export class authService {
         console.error(`Signup failed with status: ${response.status}`);
         const errorData = await response.json();
         console.error('Error response:', errorData);
-        throw new Error(errorData.message || 'Failed to create account');
+        throw new Error(errorData.message || AUTH_ERRORS.CREATION_FAILED);
       }
 
       const result = await response.json();
