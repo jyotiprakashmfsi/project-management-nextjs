@@ -1,5 +1,4 @@
 "use client";
-
 import ProtectedRoute from "@/components/protected/protected-route";
 
 export default function WorkspaceLayout({

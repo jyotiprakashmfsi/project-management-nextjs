@@ -9,6 +9,7 @@
     "lint": "next lint",
     "prepare": "husky",
     "test": "jest",
+    "format": "npx prettier --write .",
     "test:backend": "jest --config=jest.config.backend.ts",
     "test:frontend": "jest --config=jest.config.frontend.ts"
   },

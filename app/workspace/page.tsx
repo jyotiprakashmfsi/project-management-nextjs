@@ -1,6 +1,14 @@
 import DashboardComponent from "@/components/dashboard";
 import Sidebar from "@/components/ui/sidebar";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Dashboard of project management.",
+};
+
+
 export default function ProjectPage() {
   return (
     <div className="flex min-h-screen w-full bg-neutral-50">

@@ -62,6 +62,7 @@ export const AUTH_ERRORS = {
   MFA_REQUIRED: 'Multi-factor authentication required',
   MFA_INVALID: 'Invalid multi-factor authentication code',
   CREATION_FAILED: 'Account creation failed',
+  NOT_FOUND: 'User not found',
 };
 
 // Validation Error Messages

@@ -1,4 +1,5 @@
 import { getHeaders } from "@/utils/header";
+import { PROJECT_ERRORS } from "@/utils/error-constants";
 
 export interface Project {
     id: number;
@@ -23,7 +24,7 @@ export const projectApi = {
             method: 'GET',
             headers: getHeaders()
         });
-        if (!response.ok) throw new Error('Failed to fetch projects');
+        if (!response.ok) throw new Error(PROJECT_ERRORS.NOT_FOUND);
         return response.json();
     },
 
@@ -32,7 +33,7 @@ export const projectApi = {
             method: 'GET',
             headers: getHeaders()
         });
-        if (!response.ok) throw new Error('Failed to fetch project');
+        if (!response.ok) throw new Error(PROJECT_ERRORS.NOT_FOUND);
         return response.json();
     },
 
@@ -41,7 +42,7 @@ export const projectApi = {
             method: 'GET',
             headers: getHeaders()
         });
-        if (!response.ok) throw new Error('Failed to fetch projects by status');
+        if (!response.ok) throw new Error(PROJECT_ERRORS.NOT_FOUND);
         return response.json();
     },
 
@@ -51,7 +52,7 @@ export const projectApi = {
             headers: getHeaders(),
             body: JSON.stringify(projectData)
         });
-        if (!response.ok) throw new Error('Failed to create project');
+        if (!response.ok) throw new Error(PROJECT_ERRORS.CREATION_FAILED);
         return response.json();
     },
 
@@ -61,7 +62,7 @@ export const projectApi = {
             headers: getHeaders(),
             body: JSON.stringify(projectData)
         });
-        if (!response.ok) throw new Error('Failed to update project');
+        if (!response.ok) throw new Error(PROJECT_ERRORS.UPDATE_FAILED);
         return response.json();
     },
 
@@ -70,7 +71,7 @@ export const projectApi = {
             method: 'DELETE',
             headers: getHeaders()
         });
-        if (!response.ok) throw new Error('Failed to delete project');
+        if (!response.ok) throw new Error(PROJECT_ERRORS.DELETE_FAILED);
         return response.json();
     }
 };

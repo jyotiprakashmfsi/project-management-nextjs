@@ -5,10 +5,7 @@ import { getLocalTimeString } from '../helper/date';
 export class TaskRepository {
     async createTask(taskData: TaskCreateData): Promise<Task | null> {
         const mysqlEndTime = getLocalTimeString(new Date(taskData.end_time));
-        console.log("end time for the task is: ", mysqlEndTime);
         const currentTime = getLocalTimeString(new Date());
-
-        console.log("taskData", taskData);
 
         const [result] = await sequelize.query(
             `INSERT INTO tasks (project_id, title, description, status, end_time, assigned_to, task_json, priority, createdAt, updatedAt)
@@ -114,7 +111,6 @@ export class TaskRepository {
 
             return this.getTaskById(id);
         } catch (error) {
-            console.error('Error in updateTask:', error);
             throw error;
         }
     }
@@ -130,7 +126,6 @@ export class TaskRepository {
             
             return { tasks: tasks as Task[], total: parseInt(total as string) };
         } catch (error) {
-            console.error('Error in getUserTasks:', error);
             throw error;
         }
     }
