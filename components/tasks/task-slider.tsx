@@ -176,31 +176,33 @@ export default function TaskSlider({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="task-details-title">
       <div
         className="absolute inset-0 bg-black/50 bg-opacity-50"
         onClick={onClose}
+        aria-hidden="true"
       ></div>
       <div className="absolute inset-y-0 right-0 max-w-full flex">
         <div className="relative w-screen max-w-xl">
           <div className="h-full flex flex-col bg-white shadow-xl">
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-xl font-semibold text-black">Task Details</h2>
+              <h2 id="task-details-title" className="text-xl font-semibold text-black">Task Details</h2>
               <button
                 onClick={onClose}
                 className="p-1 rounded-full hover:bg-gray-100"
+                aria-label="Close task details"
               >
-                <BsX className="w-6 h-6" />
+                <BsX className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4">
               {loading ? (
-                <div className="flex items-center justify-center h-full">
+                <div className="flex items-center justify-center h-full" aria-live="polite">
                   Loading...
                 </div>
               ) : !task ? (
-                <div className="flex items-center justify-center h-full text-black">
+                <div className="flex items-center justify-center h-full text-black" aria-live="polite">
                   Task not found
                 </div>
               ) : (
@@ -214,15 +216,16 @@ export default function TaskSlider({
                         <button
                           onClick={handleMarkAsComplete}
                           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                          aria-label="Mark task as complete"
                         >
-                          <BsCheckCircle />
+                          <BsCheckCircle aria-hidden="true" />
                           Mark as Complete
                         </button>
                       )}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="flex items-center gap-2">
-                        <BsPerson className="text-neutral-400" />
+                        <BsPerson className="text-neutral-400" aria-hidden="true" />
                         <div>
                           <div className="text-sm text-neutral-500">
                             Assigned To
@@ -233,7 +236,7 @@ export default function TaskSlider({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <BsCalendar3 className="text-neutral-400" />
+                        <BsCalendar3 className="text-neutral-400" aria-hidden="true" />
                         <div>
                           <div className="text-sm text-neutral-500">
                             Due Date
@@ -244,7 +247,7 @@ export default function TaskSlider({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <BsFlag className="text-neutral-400" />
+                        <BsFlag className="text-neutral-400" aria-hidden="true" />
                         <div>
                           <div className="text-sm text-neutral-500">
                             Priority
@@ -255,7 +258,7 @@ export default function TaskSlider({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <BsClock className="text-neutral-400" />
+                        <BsClock className="text-neutral-400" aria-hidden="true" />
                         <div>
                           <div className="text-sm text-neutral-500">Status</div>
                           <div className="font-medium capitalize">
@@ -273,8 +276,8 @@ export default function TaskSlider({
                   </div>
 
                   <div className="flex-1 overflow-y-auto">
-                    <h3 className="text-lg font-medium mb-2">Activity</h3>
-                    <div className="flex-1 overflow-y-auto p-6">
+                    <h3 id="activity-section" className="text-lg font-medium mb-2">Activity</h3>
+                    <div className="flex-1 overflow-y-auto p-6" aria-labelledby="activity-section">
                       <div className="space-y-2 font-mono text-sm">
                         {task.task_json?.messages.map(
                           (message: any, index: any) => (
@@ -295,8 +298,9 @@ export default function TaskSlider({
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                                        aria-label={`Download ${file.filename}`}
                                       >
-                                        <BsDownload className="text-sm" />
+                                        <BsDownload className="text-sm" aria-hidden="true" />
                                         {file.filename}
                                       </a>
                                     )
@@ -317,23 +321,26 @@ export default function TaskSlider({
             {/* Footer - Message Input */}
             {task && task.status !== "completed" && (
               <div className="border-t p-4">
-                <form onSubmit={handleAddMessage} className="space-y-2">
+                <form onSubmit={handleAddMessage} className="space-y-2" aria-label="Add comment form">
+                  <label htmlFor="task-comment" className="sr-only">Add a comment</label>
                   <textarea
+                    id="task-comment"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Add a comment..."
                     className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                     rows={3}
+                    aria-label="Task comment"
                   />
                   {uploadedFiles.length > 0 && (
-                    <div className="space-y-1">
+                    <div className="space-y-1" aria-label="Attached files">
                       {uploadedFiles.map((file, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between bg-gray-50 p-2 rounded"
                         >
                           <div className="flex items-center gap-2">
-                            <BsPaperclip className="text-gray-500" />
+                            <BsPaperclip className="text-gray-500" aria-hidden="true" />
                             <span className="text-sm truncate max-w-[200px]">
                               {file.filename}
                             </span>
@@ -346,8 +353,9 @@ export default function TaskSlider({
                               )
                             }
                             className="text-red-500 hover:text-red-700"
+                            aria-label={`Remove ${file.filename}`}
                           >
-                            <BsX />
+                            <BsX aria-hidden="true" />
                           </button>
                         </div>
                       ))}
@@ -358,8 +366,9 @@ export default function TaskSlider({
                       type="button"
                       onClick={handleFileUpload}
                       className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                      aria-label="Attach files"
                     >
-                      <BsPaperclip />
+                      <BsPaperclip aria-hidden="true" />
                       Attach
                     </button>
                     <button
@@ -368,6 +377,7 @@ export default function TaskSlider({
                       disabled={
                         !newMessage.trim() && uploadedFiles.length === 0
                       }
+                      aria-disabled={!newMessage.trim() && uploadedFiles.length === 0}
                     >
                       Send
                     </button>
