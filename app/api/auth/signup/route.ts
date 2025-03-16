@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AuthService } from "../../../../services/api-services/authService";
-import { initializeDatabase } from "../../../../db/models";
+import { initializeDatabase } from "../../../../db/models/mysql/mysql";
 import { ERRORS, HTTP_STATUS } from "../../../../utils/error-constants";
 
 const authService = new AuthService();

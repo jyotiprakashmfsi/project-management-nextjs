@@ -1,6 +1,6 @@
-import { sequelize } from '../db/models/index';
-import { Project, ProjectCreateData, PaginationParams } from '../types/project';
-import { getLocalTimeString } from '../helper/date';
+import { sequelize } from '../../db/models/mysql/mysql';
+import { Project, ProjectCreateData, PaginationParams } from '../../types/project';
+import { getLocalTimeString } from '../../helper/date';
 import { ProjectUserRepository } from './projectUserRepository';
 
 export class ProjectRepository {

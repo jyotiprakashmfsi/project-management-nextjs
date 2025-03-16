@@ -1,5 +1,5 @@
 import { AuthService } from '../../../services/api-services/authService';
-import { AuthRepository } from '../../../repository/authRepository';
+import { AuthRepository } from '../../../repository/sql/authRepository';
 import { hashPassword } from '../../../helper/passwordHash';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';

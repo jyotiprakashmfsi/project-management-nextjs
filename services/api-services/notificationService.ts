@@ -1,4 +1,4 @@
-import { NotificationRepository } from '../../repository/notificationRepository';
+import { NotificationRepository } from '../../repository/sql/notificationRepository';
 import { Task } from '../../types/task';
 
 export class NotificationService {

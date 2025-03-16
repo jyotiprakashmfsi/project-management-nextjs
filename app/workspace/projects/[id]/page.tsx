@@ -19,7 +19,7 @@ export async function generateMetadata(
   const projectService = new ProjectService();
   const project = await projectService.getProjectById(id);
   
-  const title = project ? `${project.name} | Project Details` : "Project Details";
+  const title = project ? `${project.project_name} | Project Details` : "Project Details";
   const description = project ? project.description : "View project details and tasks";
   
   return {

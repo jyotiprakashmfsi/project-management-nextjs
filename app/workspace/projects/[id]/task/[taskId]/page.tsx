@@ -4,13 +4,11 @@ import { ProjectService } from "@/services/api-services/projectService";
 import Sidebar from "@/components/ui/sidebar";
 import TaskDetails from "@/components/tasks/task-details";
 
-// Define types for the params and props
 type Props = {
   params: { id: string; taskId: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-// Generate metadata dynamically based on task data
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
@@ -18,7 +16,6 @@ export async function generateMetadata(
   const projectId = parseInt(params.id);
   const taskId = parseInt(params.taskId);
   
-  // Fetch task and project data
   const taskService = new TaskService();
   const projectService = new ProjectService();
   
@@ -27,7 +24,7 @@ export async function generateMetadata(
     projectService.getProjectById(projectId)
   ]);
   
-  const projectName = project ? project.name : "Project";
+  const projectName = project ? project.project_name : "Project";
   const taskName = task ? task.title : "Task";
   const taskDescription = task ? task.description : "Task details";
   const taskStatus = task ? task.status : "unknown";
@@ -48,7 +45,6 @@ export async function generateMetadata(
   };
 }
 
-// Server component to fetch task data
 async function TasksPage({ params }: Props) {
 
   

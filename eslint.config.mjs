@@ -12,19 +12,6 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  hub.configs['flat/mern'],
-  {
-    languageOptions: {
-      globals: globals.builtin,
-      parserOptions: {
-        ecmaVersion: 2022,
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-    },
-  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   ...compat.rules({
     "@typescript-eslint/no-explicit-any": "off",

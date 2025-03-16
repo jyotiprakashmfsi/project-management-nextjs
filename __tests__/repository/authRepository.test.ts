@@ -1,5 +1,5 @@
-import { AuthRepository } from '../../repository/authRepository';
-import { sequelize } from '../../db/models';
+import { AuthRepository } from '../../repository/sql/authRepository';
+import { sequelize } from '../../db/models/mysql/mysql';
 
 jest.mock('../../db/models', () => ({
   sequelize: {

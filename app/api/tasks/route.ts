@@ -4,7 +4,7 @@ import { TaskService } from "../../../services/api-services/taskService";
 const taskService = new TaskService();
 
 
-export const GET = async (req: NextRequest, { params: { projectId }, searchParams: { page, limit } }: { params: { projectId: string }, searchParams: { page: string, limit: string } }) => {
+export const GET = async (req: NextRequest, { params: { projectId }, searchParams: { page, limit } }: { params: Promise<{ projectId: string }>, searchParams: Promise<{ page: string, limit: string }> }) => {
     try {
         const result = await taskService.getAllTasks(parseInt(page) || 1, parseInt(limit) || 10);
         return NextResponse.json(result);

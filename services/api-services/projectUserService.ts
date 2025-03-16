@@ -1,5 +1,5 @@
 import { ProjectUser, ProjectUserCreateData, PaginationParams } from "../../types/projectuser";
-import { ProjectUserRepository } from "../../repository/projectUserRepository";
+import { ProjectUserRepository } from "../../repository/sql/projectUserRepository";
 
 export class ProjectUserService {
     private projectUserRepository: ProjectUserRepository;

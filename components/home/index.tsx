@@ -22,7 +22,7 @@ export default function HomeComponent() {
   };
 
   const handleLogout = () => {
-    logout();
+    // logout();
     router.push("/");
   };
 
@@ -38,7 +38,6 @@ export default function HomeComponent() {
             Project Management
           </div>
           
-          {/* Mobile menu button */}
           <button 
             className="md:hidden text-gray-600 focus:outline-none"
             onClick={toggleMenu}
@@ -59,10 +58,9 @@ export default function HomeComponent() {
             </svg>
           </button>
           
-          {/* Desktop menu */}
           <div className="hidden md:flex gap-4 text-black items-center">
             <p className="font-medium">
-              {mounted && user ? "Hello " + user.fname : ""}
+              {mounted && user ? "Hello " + user.name : ""}
             </p>
             <button
               onClick={handleGetStarted}
@@ -82,11 +80,10 @@ export default function HomeComponent() {
           </div>
         </div>
         
-        {/* Mobile menu */}
         <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white/95 shadow-md`}>
           <div className="container mx-auto px-6 py-4 space-y-4">
             <p className="font-medium">
-              {mounted && user ? "Hello " + user.fname : ""}
+              {mounted && user ? "Hello " + user.name : ""}
             </p>
             <button
               onClick={handleGetStarted}

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { TaskService } from "../../../../../../services/api-services/taskService";
 const taskService = new TaskService();
 
-export const GET = async (req: NextRequest, { params: { id } }: { params: { id: string } }): Promise<any> => {
+export const GET = async (req: NextRequest, { params: { id } }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
         const projectId = parseInt(id);
         const status = "started";

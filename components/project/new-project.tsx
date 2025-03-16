@@ -30,7 +30,6 @@ function NewProjectComponent() {
             [e.target.name]: e.target.value
         });
         
-        // Clear the specific field error when user starts typing
         if (errors[e.target.name as keyof typeof errors]) {
             setErrors({
                 ...errors,
@@ -75,7 +74,6 @@ function NewProjectComponent() {
         console.log(user)
         e.preventDefault();
         
-        // Validate all fields before submission
         const nameError = validateField('name', formData.name);
         const descriptionError = validateField('description', formData.description);
         
@@ -95,7 +93,7 @@ function NewProjectComponent() {
             
             await projectApi.createProject({
                 ...formData,
-                created_by: user.id
+                created_by: parseInt(user.id)
             });
             router.push('/workspace');
         } catch (err: any) {

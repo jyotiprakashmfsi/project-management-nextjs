@@ -3,7 +3,7 @@ import { TaskService } from "../../../../services/api-services/taskService";
 
 const taskService = new TaskService();
 
-export const GET = async (req: NextRequest, { params }: { params: { id: string } }): Promise<any> => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
         const { id } = await params;
         const taskId = parseInt(id);
@@ -21,7 +21,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
 };
 
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
         const taskId = parseInt(id);

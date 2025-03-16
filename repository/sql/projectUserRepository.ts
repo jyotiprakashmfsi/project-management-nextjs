@@ -1,6 +1,6 @@
-import { sequelize } from '../db/models/index';
-import { ProjectUser, ProjectUserCreateData, PaginationParams } from '../types/projectuser';
-import { getLocalTimeString } from '../helper/date';
+import { sequelize } from '../../db/models/mysql/mysql';
+import { ProjectUser, ProjectUserCreateData, PaginationParams } from '../../types/projectuser';
+import { getLocalTimeString } from '../../helper/date';
 
 export class ProjectUserRepository {
     async addUserToProject(projectUserData: ProjectUserCreateData): Promise<ProjectUser | null> {

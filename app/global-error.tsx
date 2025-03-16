@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export default function GlobalError({
   error,
-  reset,
+  reset
 }: {
   error: Error & { digest?: string };
   reset: () => void;

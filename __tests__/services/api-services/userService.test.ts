@@ -1,6 +1,6 @@
 import { UserService } from '../../../services/api-services/userService';
-import { UserRepository } from '../../../repository/userRepository';
-import { sequelize } from '../../../db/models';
+import { UserRepository } from '../../../repository/sql/userRepository';
+import { sequelize } from '../../../db/models/mysql/mysql';
 import { getLocalTimeString } from '../../../helper/date';
 
 // Mock dependencies

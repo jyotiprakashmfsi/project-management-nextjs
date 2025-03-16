@@ -36,6 +36,7 @@ export class authService {
 
       const result = await response.json();
       console.log('Login successful');
+      console.log(result);
       return result;
     } catch (error) {
       console.error('Error during login:', error);

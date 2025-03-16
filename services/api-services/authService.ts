@@ -1,13 +1,21 @@
 import { hashPassword } from '../../helper/passwordHash';
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { AuthRepository } from '../../repository/authRepository';
+import { AuthRepository } from '../../repository/sql/authRepository';
 import { UserData, SafeUser } from '../../types/user';
 import bcrypt from 'bcryptjs';
 import { AUTH_ERRORS, VALIDATION_ERRORS, USER_ERRORS } from '../../utils/error-constants';
 
 dotenv.config();
 const secretKey = process.env.JWT_SECRET_TOKEN || '';
+const database = process.env.NEXT_DATABASE || 'mongodb';
+
+// let AuthRepository: any;
+// if (database === 'mongodb') {
+//     AuthRepository = require('../../repository/mongodb/authRepository');
+// } else {
+//     AuthRepository = require('../../repository/sql/authRepository');
+// }
 
 export class AuthService {
     private authRepository: AuthRepository;
@@ -20,9 +28,7 @@ export class AuthService {
     async createUser(userData: UserData): Promise<void> {
         console.log('AuthService: Creating user with email:', userData.email);
         
-        // Wrap everything in a try/catch to prevent crashes
         try {
-            // Validate user data
             if (!userData.email || !userData.password || !userData.fname) {
                 throw new Error(VALIDATION_ERRORS.MISSING_FIELDS);
             }
@@ -31,33 +37,30 @@ export class AuthService {
                 hashedPassword = await hashPassword(userData.password);
 
             
-            console.log('AuthService: Calling repository to create user...');
             try {
                 await this.authRepository.createUser(userData, hashedPassword);
             } catch (repoError) {
                 throw new Error(`Repository error: ${repoError instanceof Error ? repoError.message : AUTH_ERRORS.CREATION_FAILED}`);
             }
         } catch (error) {
-            // Rethrow but don't crash
             throw new Error(`User creation failed: ${error instanceof Error ? error.message : USER_ERRORS.CREATION_FAILED}`);
         }
     }
 
     async authenticateUser(email: string, password: string): Promise<{ token: string, user: SafeUser }> {
         try {
+            console.log('AuthService: Authenticating user with email:', email);
             const result = await this.authRepository.findUserByEmail(email);
             
-            // Handle different possible return structures
             let user;
             if (Array.isArray(result) && result.length > 0) {
                 if (Array.isArray(result[0]) && result[0].length > 0) {
-                    // Handle [[user]] structure
                     user = result[0][0];
                 } else {
-                    // Handle [user] structure
                     user = result[0];
                 }
             }
+            console.log('User found:', user); 
 
             if (!user) {
                 throw new Error(USER_ERRORS.NOT_FOUND);

@@ -1,6 +1,6 @@
-import { sequelize } from '../db/models/index';
-import { Task, TaskCreateData, PaginationParams } from '../types/task';
-import { getLocalTimeString } from '../helper/date';
+import { sequelize } from '../../db/models/mysql/mysql';
+import { Task, TaskCreateData, PaginationParams } from '../../types/task';
+import { getLocalTimeString } from '../../helper/date';
 
 export class TaskRepository {
     async createTask(taskData: TaskCreateData): Promise<Task | null> {

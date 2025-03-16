@@ -3,7 +3,7 @@ import { ProjectService } from "../../../../services/api-services/projectService
 
 const projectService = new ProjectService();
 
-export const GET = async (req: NextRequest, { params }: { params: { id: string } }): Promise<any> => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
         const {id} = await params;
         const project = await projectService.getProjectById(parseInt(id));
@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     }
 };
 
-export const PUT = async (req: NextRequest, { params }: { params: { id: string } }): Promise<any> => {
+export const PUT = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
         const {id} = await params;
         const projectId = parseInt(id);
@@ -37,7 +37,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
     }
 };
 
-export const DELETE = async (req: NextRequest, { params }: { params: { id: string } }): Promise<any> => {
+export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
         const {id} = await params;
         const projectId = parseInt(id);

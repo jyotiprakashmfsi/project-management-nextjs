@@ -1,4 +1,5 @@
-import LoginComponent from "@/components/auth/signin";
+"use client"
+import LoginComponent from "@/components/auth/signin/index";
 
 export default function HomeComponent() {
 

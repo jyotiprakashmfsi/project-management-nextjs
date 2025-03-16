@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { Sequelize, DataTypes } from "sequelize";
-import config from "../config/config";
+import config from "../../config/config";
 import mysql2 from 'mysql2'; 
 // const { Sequelize, DataTypes } = require('sequelize');
 // const {mysql2} = require('mysql2')
@@ -70,11 +70,9 @@ const User = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW
     }
   },
 )
@@ -109,11 +107,9 @@ const ProjectUsers = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW
     }
   },
 )
@@ -148,11 +144,9 @@ const Projects = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW
     }
   },
 )
@@ -209,11 +203,9 @@ const Tasks = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      default: DataTypes.NOW
     }
   },
 )

@@ -3,7 +3,7 @@ import { ProjectService } from "../../../services/api-services/projectService";
 
 const projectService = new ProjectService();
 
-export const GET = async (req: NextRequest, { params: { projectId }, searchParams: { page, limit } }: { params: { projectId: string }, searchParams: { page: string, limit: string } }): Promise<any> => {
+export const GET = async (req: NextRequest, { searchParams: { page, limit } }: { searchParams: Promise<{ page: string, limit: string }> }): Promise<any> => {
     try {
         const result = await projectService.getAllProjects(parseInt(page) || 1, parseInt(limit) || 10);
         return NextResponse.json(result);

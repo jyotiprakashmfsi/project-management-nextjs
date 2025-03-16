@@ -1,5 +1,5 @@
 import { Project, ProjectCreateData, PaginationParams } from "../../types/project";
-import { ProjectRepository } from "../../repository/projectRepository";
+import { ProjectRepository } from "../../repository/sql/projectRepository";
 
 export class ProjectService {
     private projectRepository: ProjectRepository;
@@ -17,11 +17,11 @@ export class ProjectService {
         return this.projectRepository.getAllProjects(pagination);
     }
 
-    async getProjectById(id: number): Promise<any | null> {
+    async getProjectById(id: number): Promise<Project | null> {
         return this.projectRepository.getProjectById(id);
     }
 
-    async updateProject(id: number, projectData: Partial<ProjectCreateData>): Promise<Project | null> {
+    async updateProject(id: number, projectData: Partial<Project>): Promise<Project | null> {
         return this.projectRepository.updateProject(id, projectData);
     }
 

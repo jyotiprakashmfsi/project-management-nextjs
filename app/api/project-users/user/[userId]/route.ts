@@ -6,7 +6,7 @@ const projectUserService = new ProjectUserService();
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<NextResponse> {
     try {
         const { userId } = await params;

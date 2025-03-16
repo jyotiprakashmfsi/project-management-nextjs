@@ -1,6 +1,6 @@
-import { sequelize } from '../db/models/index';
-import { UserUpdateData } from '../types/user';
-import { getLocalTimeString } from '../helper/date';
+import { sequelize } from '../../db/models/mysql/mysql';
+import { UserUpdateData } from '../../types/user';
+import { getLocalTimeString } from '../../helper/date';
 
 export class UserRepository {
     async getAllUsers() {

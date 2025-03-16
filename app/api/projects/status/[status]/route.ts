@@ -3,7 +3,7 @@ import { ProjectService } from "../../../../../services/api-services/projectServ
 
 const projectService = new ProjectService();
 
-export const GET = async (req: NextRequest, { params: { status } }: { params: { status: string } }): Promise<any> => {
+export const GET = async (req: NextRequest, { params: { status } }: { params: Promise<{ status: string }> }): Promise<any> => {
     try {
         const projects = await projectService.getProjectsByStatus(status);
         return NextResponse.json(projects);

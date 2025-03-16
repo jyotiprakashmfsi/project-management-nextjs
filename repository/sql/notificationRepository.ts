@@ -1,5 +1,5 @@
-import { sequelize } from '../db/models/index';
-import { Task } from "../types/task";
+import { sequelize } from '../../db/models/mysql/mysql';
+import { Task } from "../../types/task";
 
 export class NotificationRepository {
     async getApproachingTasks(userId: string): Promise<any> {

@@ -1,5 +1,5 @@
 import { Task, TaskCreateData, PaginationParams } from "../../types/task";
-import { TaskRepository } from "../../repository/taskRepository";
+import { TaskRepository } from "../../repository/sql/taskRepository";
 
 export class TaskService {
     private taskRepository: TaskRepository;

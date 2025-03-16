@@ -4,7 +4,7 @@ import { UserService } from "../../../../services/api-services/userService";
 const userService = new UserService();
 
 
-export const DELETE = async (req: NextRequest, { params: { id } }: { params: { id: string } }): Promise<any> => {
+export const DELETE = async (req: NextRequest, { params: { id } }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
       const result = await userService.deleteUser(id);
       return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
@@ -14,7 +14,7 @@ export const DELETE = async (req: NextRequest, { params: { id } }: { params: { i
     }
   };
 
-  export const PUT = async (req: NextRequest, { params: { id } }: { params: { id: string } }): Promise<any> => {
+  export const PUT = async (req: NextRequest, { params: { id } }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
       const body = await req.json()
       const result = await userService.updateUser(id, body);
@@ -25,7 +25,7 @@ export const DELETE = async (req: NextRequest, { params: { id } }: { params: { i
     }
   };
 
-  export const GET = async (req: NextRequest, { params: { id } }: { params: { id: string } }): Promise<any> => {
+  export const GET = async (req: NextRequest, { params: { id } }: { params: Promise<{ id: string }> }): Promise<any> => {
     try {
       const user = await userService.getUserById(id);
       console.log("User fetched:", user)

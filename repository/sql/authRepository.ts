@@ -1,6 +1,6 @@
-import { UserData } from "../types/user";
-import { sequelize } from '../db/models/index';
-import { AUTH_ERRORS } from '../utils/error-constants';
+import { UserData } from "../../types/user";
+import { sequelize } from '../../db/models/mysql/mysql';
+import { AUTH_ERRORS } from '../../utils/error-constants';
 
 export class AuthRepository {
     async createUser(userData: UserData, hashedPassword: string): Promise<void> {

@@ -5,7 +5,7 @@ const projectUserService = new ProjectUserService();
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { projectId: string, userId: string } }
+  { params }: { params: Promise<{ projectId: string, userId: string }> }
 ): Promise<NextResponse> {
     try {
         const { projectId, userId } = params;

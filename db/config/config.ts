@@ -10,7 +10,8 @@ const config = {
         host: process.env.DB_HOST || '',
         port: process.env.DB_PORT || '',
         dialect: 'mysql',
-        benchmark: true
+        benchmark: true,
+        mongodburl: process.env.MONGODB_URL || '',
     }
 };
 

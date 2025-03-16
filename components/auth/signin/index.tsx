@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
-import { authService } from "@/services/client-services/auth/api";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/context/UserContext";
+import { signIn } from "next-auth/react";
+import { FaGoogle } from 'react-icons/fa';
 
 interface ValidationErrors {
   email?: string;
@@ -12,7 +12,6 @@ interface ValidationErrors {
 }
 
 function LoginComponent() {
-  const { setUser, setToken } = useUser();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -76,15 +75,18 @@ function LoginComponent() {
     setLoading(true);
 
     try {
-      const response = await authService.login(formData);
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
 
-      if (response.token && response.user) {
-        setToken(response.token);
-        setUser(response.user);
+      if (result?.error) {
+        toast.error(result.error);
+      } else {
         toast.success('Login successful!');
         router.push('/workspace');
-      } else {
-        toast.error('Invalid email or password');
+        router.refresh();
       }
     } catch (err: any) {
       if (err.response?.data?.message) {
@@ -97,36 +99,47 @@ function LoginComponent() {
     }
   };
 
+  const handleGoogleSignIn = () => {
+    try {
+      signIn('google', { 
+        callbackUrl: '/workspace',
+      });
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      toast.error('An error occurred with Google sign-in');
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
       <div className="w-full flex justify-start px-8 absolute top-4">
         <a 
           href="/"
-          className="text-indigo-600 hover:text-indigo-500 font-medium text-sm"
+          className="text-indigo-600 hover:text-indigo-500 font-medium text-sm dark:text-indigo-400 dark:hover:text-indigo-300"
         >
           /Home
         </a>
       </div>
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 id="signin-form-title" className="mt-6 text-center text-3xl font-extrabold text-black">
+          <h2 id="signin-form-title" className="mt-6 text-center text-3xl font-extrabold text-black dark:text-white">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-center text-sm text-black">
+          <p className="mt-2 text-center text-sm text-black dark:text-gray-300">
             Welcome back to your project management dashboard
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit} aria-labelledby="signin-form-title">
           <div className="rounded-md space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email address
               </label>
               <input
                 id="email"
                 name="email"
                 type="email"
-                className="mt-1 appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black dark:text-white dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -135,11 +148,11 @@ function LoginComponent() {
                 aria-describedby={validationErrors.email ? "email-error" : undefined}
               />
               {validationErrors.email && (
-                <p className="mt-2 text-sm text-red-600" id="email-error" role="alert">{validationErrors.email}</p>
+                <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="email-error" role="alert">{validationErrors.email}</p>
               )}
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Password
               </label>
               <div className="mt-1 relative">
@@ -147,7 +160,7 @@ function LoginComponent() {
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black dark:text-white dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   value={formData.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -169,14 +182,14 @@ function LoginComponent() {
                 </button>
               </div>
               {validationErrors.password && (
-                <p className="mt-2 text-sm text-red-600" id="password-error" role="alert">{validationErrors.password}</p>
+                <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="password-error" role="alert">{validationErrors.password}</p>
               )}
             </div>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500" aria-label="Sign up for a new account">
+              <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300" aria-label="Sign up for a new account">
                 Don't have an account? Sign up
               </a>
             </div>
@@ -196,6 +209,30 @@ function LoginComponent() {
             </button>
           </div>
         </form>
+
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <button
+              onClick={handleGoogleSignIn}
+              type="button"
+              className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
+            >
+              <FaGoogle className="h-5 w-5 mr-2" />
+              <span>Sign in with Google</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

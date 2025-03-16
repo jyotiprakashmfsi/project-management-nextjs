@@ -94,7 +94,8 @@ const Sidebar: React.FC = () => {
   const fetchUserProjects = async () => {
     try {
       if (!user?.id) throw new Error('User not found');
-      const userProjects = await projectUserApi.getUserProjects(user!.id);
+      const userProjects = await projectUserApi.getUserProjects(parseInt(user!.id));
+      console.log(userProjects)
       setProjects(userProjects);
     } catch (error: any) {
       toast.error(error.message || 'Failed to fetch projects');
@@ -183,11 +184,11 @@ const Sidebar: React.FC = () => {
                         </li>
                       ) : projects.length > 0 ? (
                         projects.map((project) => (
-                          <li key={project.project_id}>
+                          <li key={project.project_id || project.id}>
                             <button
                               onClick={() => {
                                 if (router) {
-                                  router.push(`/workspace/projects/${project.project_id}`);
+                                  router.push(`/workspace/projects/${project.project_id || project.id}`);
                                 }
                               }}
                               className="w-full text-left text-sm text-neutral-700 hover:bg-neutral-100 rounded-md px-2 py-1.5 transition-colors"
@@ -233,7 +234,7 @@ const Sidebar: React.FC = () => {
                 <RiUserLine size={20} className="text-neutral-600" />
               </div>
               <div>
-                <p className="font-medium text-neutral-800">{user?.fname || "User"}</p>
+                <p className="font-medium text-neutral-800">{user?.name || "User"}</p>
                 <p className="text-sm text-neutral-500">{user?.email || ""}</p>
               </div>
             </div>

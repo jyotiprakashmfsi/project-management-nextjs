@@ -1,7 +1,7 @@
-import { UserRepository } from "../../repository/userRepository";
+import { UserRepository } from "../../repository/sql/userRepository";
 import { UserUpdateData } from "../../types/user";
 import { getLocalTimeString } from "../../helper/date";
-import { sequelize } from "@/db/models";
+import { sequelize } from "@/db/models/mysql/mysql";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 

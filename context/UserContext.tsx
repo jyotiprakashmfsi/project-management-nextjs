@@ -1,54 +1,64 @@
 'use client';
-import { createContext, useContext, useState, ReactNode } from "react";
-import Cookies from "js-cookie";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface User {
-  id?: number;
-  email?: string;
-  fname?: string;
+  id?: string;
+  email?: string | null;
+  name?: string;
 }
 
 interface UserContextType {
   user: User | null;
   token: string | null;
-  setUser: (user: User ) => void;
-  setToken: (token: string ) => void;
   logout: () => void;
+  isLoading: boolean;
 } 
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    const savedUser = Cookies.get("user");
-    if (savedUser === undefined || savedUser === 'undefined' || savedUser === null) return null;
-    return JSON.parse(savedUser);
-  });
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const [token, setTokenState] = useState<string | null>(
-    Cookies.get("token") || null
-  );
+  useEffect(() => {
+    if (status === 'loading') {
+      setIsLoading(true);
+      return;
+    }
+    // console.log(session);
+    
+    if (session?.user) {
+      setUser({
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name});
+      setToken(session.user.accessToken as string || null);
+    } else {
+      setUser(null);
+      setToken(null);
+    }
+    
+    setIsLoading(false);
+  }, [session, status]);
 
-  const setToken = (newToken: string) => {
-    Cookies.set("token", newToken, { expires: 7 });
-    setTokenState(newToken);
-  };
-
-  const updateUser = (newUser: User) => {
-    Cookies.set("user", JSON.stringify(newUser), { expires: 7 });
-    setUser(newUser);
-  };
-
-  const logout = () => {
-    Cookies.remove("token");
-    Cookies.remove("user");
-    setUser(null);
-    setTokenState(null);
+  const logout = async () => {
+    await signOut({ redirect: false });
+    router.push('/login');
   };
 
   return (
     <UserContext.Provider
-      value={{ user, token, setUser: updateUser, setToken, logout }}
+      value={{ 
+        user, 
+        token, 
+        logout,
+        isLoading
+      }}
     >
       {children}
     </UserContext.Provider>
@@ -58,7 +68,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 export function useUser() {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error("useUser is not valid");
+    throw new Error("useUser must be used within a UserProvider");
   }
   return context;
 }
